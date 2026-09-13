@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deriv Prediction Lab V3.2 - Adaptive</title>
+  <title>Deriv Prediction Lab V3.3 - Adaptive</title>
 
   <style>
     :root {
@@ -154,7 +154,7 @@
 
 <body>
   <div class="container">
-    <h1>Deriv Prediction Lab V3.2 (Adaptive + New-API Compatible)</h1>
+    <h1>Deriv Prediction Lab V3.3 (Stream via History Endpoint)</h1>
 
     <div class="warning">
       Educational research only. This tool estimates probabilities from past digits and tests historical signals.
@@ -204,7 +204,7 @@
       </div>
 
       <div class="status" id="status">
-        Ready. Press Load History or Start Live. The app syncs the server's symbol list (old + new API formats) and, if needed, probes known market codes automatically.
+        Ready. Live mode now streams ticks through the ticks_history endpoint (subscribe:1), which your server accepts.
       </div>
     </div>
 
@@ -396,8 +396,8 @@
     <div class="card">
       <div class="label">Model explanation</div>
       <div class="small">
-        Adaptive hybrid digit-transition model. Compatible with both Deriv legacy and new API response formats.
-        If the server's symbol list is empty or renamed, the app probes known volatility-index codes until one is accepted.
+        Adaptive hybrid digit-transition model. Live streaming uses ticks_history with subscribe:1
+        (single endpoint for history + live ticks), compatible with legacy and new Deriv API formats.
       </div>
     </div>
   </div>
@@ -429,7 +429,6 @@
     let rollingWindow = [];
     let adaptiveWeights = { p2Penalty: 1.0, smoothingBoost: 0 };
 
-    // Connection / symbol-fix state
     const ENDPOINTS = [
       "wss://ws.derivws.com/websockets/v3",
       "wss://ws.binaryws.com/websockets/v3"
@@ -448,9 +447,10 @@
     let probing = false;
     let probeIndex = 0;
     let probeCandidate = null;
+    let probeCycles = 0;
+    let triedFullSymbols = false;
 
     let livePipSize = null;
-
     let debugLines = [];
 
     const appIdEl = $("appId");
@@ -619,46 +619,67 @@
       initPrevFromSaved();
     }
 
-    function requestActiveSymbols(socket) {
-      socket.send(JSON.stringify({ active_symbols: "brief" }));
+    function requestActiveSymbols(socket, mode) {
+      socket.send(JSON.stringify({ active_symbols: mode || "brief" }));
+    }
+
+    // Single request for history AND live stream (the endpoint your server accepts)
+    function sendHistoryRequest(socket, sym, subscribe) {
+      const s = readSettings();
+      const req = {
+        ticks_history: sym,
+        adjust_start_time: 1,
+        count: s.historyCount,
+        end: "latest",
+        style: "ticks"
+      };
+      if (subscribe) req.subscribe = 1;
+      socket.send(JSON.stringify(req));
     }
 
     function handleActiveSymbols(data, socket) {
       const arr = data.active_symbols || data.underlying_symbols || data.symbols || [];
       activeSymbols = Array.isArray(arr) ? arr : [];
 
-      const sym = rebuildSymbolDropdown();
-      symbolRetries = 0;
-
       const synthCount = activeSymbols.filter(isSynthetic).length;
       pushDebug(`active_symbols: ${activeSymbols.length} entries, ${synthCount} synthetic`);
 
       if (!activeSymbols.length || !synthCount) {
+        if (!triedFullSymbols) {
+          triedFullSymbols = true;
+          requestActiveSymbols(socket, "full");
+          return;
+        }
         beginProbe(socket);
         return;
       }
 
-      if (sessionMode === "history") {
-        const s = readSettings();
-        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}. Loading history...`);
-        socket.send(JSON.stringify({
-          ticks_history: sym,
-          adjust_start_time: 1,
-          count: s.historyCount,
-          end: "latest",
-          style: "ticks"
-        }));
-      } else if (sessionMode === "live") {
-        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}. Waiting for ticks...`);
-        socket.send(JSON.stringify({ ticks: sym, subscribe: 1 }));
+      const sym = rebuildSymbolDropdown();
+      symbolRetries = 0;
+
+      if (sessionMode === "history" || sessionMode === "live") {
+        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}.`);
+        sendHistoryRequest(socket, sym, sessionMode === "live");
       }
     }
 
-    // ---------- Probe mode: try known codes until server accepts one ----------
+    // ---------- Probe mode ----------
     function beginProbe(socket) {
+      if (probeCycles >= 3) {
+        probing = false;
+        pushDebug("probe: giving up after 3 cycles");
+        setStatus(
+          "Server rejected all known symbol codes. " +
+          "Try: (1) register a FREE App ID at developers.deriv.com and paste it above, " +
+          "(2) switch network (Wi-Fi <-> mobile data). Screenshot Diagnostics if it persists."
+        );
+        return;
+      }
+
+      probeCycles++;
       probing = true;
       probeIndex = 0;
-      setStatus("Symbol list empty or unreadable — probing known market codes...");
+      setStatus("Symbol list empty — probing known market codes...");
       probeNext(socket);
     }
 
@@ -667,10 +688,8 @@
         probing = false;
         pushDebug("probe: all candidates rejected");
         setStatus(
-          "All known symbol codes were rejected by this server. " +
-          "Try: (1) register a FREE App ID at developers.deriv.com and paste it above, " +
-          "(2) switch network (Wi-Fi <-> mobile data), then retry. " +
-          "Screenshot the Diagnostics box if it persists."
+          "All known symbol codes were rejected. " +
+          "Register a free App ID at developers.deriv.com or switch network, then retry."
         );
         return;
       }
@@ -678,13 +697,15 @@
       probeCandidate = CANDIDATE_SYMBOLS[probeIndex++];
       setStatus(`Probing market code ${probeCandidate} (${probeIndex}/${CANDIDATE_SYMBOLS.length})...`);
 
-      socket.send(JSON.stringify({
+      const req = {
         ticks_history: probeCandidate,
         adjust_start_time: 1,
         count: 500,
         end: "latest",
         style: "ticks"
-      }));
+      };
+      if (sessionMode === "live") req.subscribe = 1;
+      socket.send(JSON.stringify(req));
     }
 
     function acceptProbe(data, socket) {
@@ -692,11 +713,11 @@
       probing = false;
 
       adoptSymbol(cand);
-      pushDebug(`probe: ACCEPTED ${cand}`);
+      pushDebug(`probe: ACCEPTED ${cand} (stream=${sessionMode === "live" ? 1 : 0})`);
 
-      processHistory(data, socket, sessionMode === "live");
+      processHistory(data, socket);
     }
-    // -------------------------------------------------------------------
+    // -------------------------------
 
     function digitsKey(symbol) { return "deriv_lab_digits_" + symbol; }
     function epochKey(symbol) { return "deriv_lab_epoch_" + symbol; }
@@ -841,7 +862,7 @@
             if (symbolRetries < 2) {
               symbolRetries++;
               setStatus(`Symbol rejected — re-syncing list (attempt ${symbolRetries})...`);
-              requestActiveSymbols(socket);
+              requestActiveSymbols(socket, "brief");
               return;
             }
           }
@@ -874,16 +895,17 @@
     }
 
     function loadHistory() {
-      const s = readSettings();
       sessionMode = "history";
       symbolRetries = 0;
       probing = false;
+      probeCycles = 0;
+      triedFullSymbols = false;
 
       setStatus("Connecting and syncing symbol list from Deriv...");
 
       connectWebSocket({
         onOpen(socket) {
-          requestActiveSymbols(socket);
+          requestActiveSymbols(socket, "brief");
         },
 
         onMessage(data, socket) {
@@ -894,13 +916,13 @@
 
           if (data.msg_type === "history") {
             if (probing) { acceptProbe(data, socket); return; }
-            processHistory(data, socket, false);
+            processHistory(data, socket);
           }
         }
       });
     }
 
-    function processHistory(data, socket, subscribeAfter) {
+    function processHistory(data, socket) {
       const s = readSettings();
 
       const prices = data?.history?.prices || [];
@@ -926,11 +948,10 @@
       renderModelInfo();
       renderPrediction(currentPrediction());
 
-      setStatus(`History loaded: ${savedDigits.length} digits for ${symbolEl.value}.`);
-
-      if (subscribeAfter) {
-        setStatus(`History loaded. Subscribing live ticks for ${symbolEl.value}...`);
-        socket.send(JSON.stringify({ ticks: symbolEl.value, subscribe: 1 }));
+      if (sessionMode === "live") {
+        setStatus(`History loaded (${savedDigits.length} digits). Streaming live ticks for ${symbolEl.value}...`);
+      } else {
+        setStatus(`History loaded and saved: ${savedDigits.length} digits for ${symbolEl.value}.`);
       }
     }
 
@@ -939,6 +960,8 @@
       sessionMode = "live";
       symbolRetries = 0;
       probing = false;
+      probeCycles = 0;
+      triedFullSymbols = false;
 
       loadSavedHistory(s.symbol);
       rebuildModel(savedDigits, s.modelWindow);
@@ -947,20 +970,19 @@
       renderModelInfo();
       renderPrediction(currentPrediction());
 
-      setStatus(`Connecting live for ${s.symbol}... syncing symbol list first...`);
+      setStatus(`Connecting live for ${s.symbol}...`);
 
       connectWebSocket({
         onOpen(socket) {
           timeSentAt = Date.now();
           socket.send(JSON.stringify({ time: 1 }));
-          requestActiveSymbols(socket);
+          requestActiveSymbols(socket, "brief");
         },
 
         onMessage(data, socket) {
           if (data.msg_type === "time") {
             const latency = Date.now() - timeSentAt;
             timeOffset = data.time * 1000 + Math.round(latency / 2) - Date.now();
-            setStatus(`Live: ${symbolEl.value} | Time synced`);
           }
 
           if (data.msg_type === "active_symbols") {
@@ -968,8 +990,9 @@
             return;
           }
 
-          if (data.msg_type === "history" && probing) {
-            acceptProbe(data, socket);
+          if (data.msg_type === "history") {
+            if (probing) { acceptProbe(data, socket); return; }
+            processHistory(data, socket);
             return;
           }
 
@@ -1412,4 +1435,4 @@
     })();
   </script>
 </body>
-            </html>
+  </html>
