@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deriv Prediction Lab V3.1 - Adaptive</title>
+  <title>Deriv Prediction Lab V3.2 - Adaptive</title>
 
   <style>
     :root {
@@ -20,11 +20,8 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
-
     body { background: var(--bg); color: var(--text); padding: 12px; }
-
     .container { max-width: 980px; margin: 0 auto; }
-
     h1 { font-size: 22px; margin-bottom: 8px; }
 
     .warning {
@@ -138,12 +135,26 @@
     .tick-log-table th { color: var(--muted); font-weight: normal; background: #081020; }
     .tick-log-table .win { color: var(--green); font-weight: bold; }
     .tick-log-table .loss { color: var(--red); }
+
+    .debug-log {
+      margin-top: 8px;
+      background: #081020;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 220px;
+      overflow: auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Deriv Prediction Lab V3.1 (Adaptive + Auto Symbol Fix)</h1>
+    <h1>Deriv Prediction Lab V3.2 (Adaptive + New-API Compatible)</h1>
 
     <div class="warning">
       Educational research only. This tool estimates probabilities from past digits and tests historical signals.
@@ -159,7 +170,7 @@
         </div>
 
         <div>
-          <label for="symbol">Market (auto-synced with server)</label>
+          <label for="symbol">Market (auto-synced + auto-probed)</label>
           <select id="symbol">
             <option value="R_10">Volatility 10 Index</option>
             <option value="R_25">Volatility 25 Index</option>
@@ -193,7 +204,7 @@
       </div>
 
       <div class="status" id="status">
-        Ready. Load history first, then start live. The market list auto-updates from Deriv's active symbols on connect.
+        Ready. Press Load History or Start Live. The app syncs the server's symbol list (old + new API formats) and, if needed, probes known market codes automatically.
       </div>
     </div>
 
@@ -355,6 +366,12 @@
     </div>
 
     <div class="card">
+      <div class="label">Diagnostics (raw server messages)</div>
+      <div class="small">If something fails, screenshot this box and send it.</div>
+      <div class="debug-log" id="debugLog">No messages yet.</div>
+    </div>
+
+    <div class="card">
       <div class="row-2">
         <div>
           <label for="trainSize">Backtest Training Size</label>
@@ -379,9 +396,8 @@
     <div class="card">
       <div class="label">Model explanation</div>
       <div class="small">
-        Adaptive hybrid digit-transition model with live symbol validation.
-        On connect the app downloads Deriv's active symbol list and remaps your market choice automatically,
-        so renamed or region-restricted symbols no longer break the connection.
+        Adaptive hybrid digit-transition model. Compatible with both Deriv legacy and new API response formats.
+        If the server's symbol list is empty or renamed, the app probes known volatility-index codes until one is accepted.
       </div>
     </div>
   </div>
@@ -413,10 +429,29 @@
     let rollingWindow = [];
     let adaptiveWeights = { p2Penalty: 1.0, smoothingBoost: 0 };
 
-    // --- NEW: symbol auto-fix state ---
+    // Connection / symbol-fix state
+    const ENDPOINTS = [
+      "wss://ws.derivws.com/websockets/v3",
+      "wss://ws.binaryws.com/websockets/v3"
+    ];
+    let endpointIdx = 0;
+
+    const CANDIDATE_SYMBOLS = [
+      "R_10", "R_25", "R_50", "R_75", "R_100",
+      "1HZ10V", "1HZ25V", "1HZ50V", "1HZ75V", "1HZ100V",
+      "1HZ10", "1HZ25", "1HZ50", "1HZ75", "1HZ100"
+    ];
+
     let activeSymbols = [];
-    let sessionMode = null;      // "history" | "live" | null
+    let sessionMode = null;
     let symbolRetries = 0;
+    let probing = false;
+    let probeIndex = 0;
+    let probeCandidate = null;
+
+    let livePipSize = null;
+
+    let debugLines = [];
 
     const appIdEl = $("appId");
     const symbolEl = $("symbol");
@@ -462,6 +497,7 @@
     const testLimitEl = $("testLimit");
     const runBacktestBtn = $("runBacktestBtn");
     const backtestResultsEl = $("backtestResults");
+    const debugLogEl = $("debugLog");
 
     loadHistoryBtn.addEventListener("click", loadHistory);
     startLiveBtn.addEventListener("click", startLive);
@@ -500,6 +536,13 @@
       statusEl.textContent = message;
     }
 
+    function pushDebug(text) {
+      const time = new Date().toLocaleTimeString();
+      debugLines.unshift(`[${time}] ${text}`);
+      if (debugLines.length > 8) debugLines.pop();
+      debugLogEl.textContent = debugLines.join("\n");
+    }
+
     function readSettings() {
       return {
         appId: appIdEl.value.trim() || "1089",
@@ -524,47 +567,80 @@
       };
     }
 
-    // ---------- NEW: active symbol handling ----------
+    // ---------- Symbol helpers (legacy + new API field names) ----------
+    function symCode(a) { return a.symbol || a.underlying_symbol || ""; }
+    function symName(a) { return a.display_name || a.underlying_symbol_name || symCode(a); }
+
     function isSynthetic(a) {
-      const md = (a.market_display_name || "").toLowerCase();
-      const sd = (a.submarket_display_name || "").toLowerCase();
-      const dn = (a.display_name || "").toLowerCase();
-      return md.includes("synthetic") || md.includes("derived") || sd.includes("volatility") || dn.includes("volatility");
+      const blob = [
+        a.market, a.submarket, a.subgroup,
+        a.market_display_name, a.submarket_display_name,
+        a.underlying_symbol_type, symName(a), symCode(a)
+      ].join(" ").toLowerCase();
+
+      return blob.includes("synthetic") || blob.includes("derived") || blob.includes("volatility");
     }
 
     function rebuildSymbolDropdown() {
       const synth = activeSymbols.filter(isSynthetic);
       if (!synth.length) return symbolEl.value;
 
-      synth.sort((a, b) => (a.display_name || "").localeCompare(b.display_name || ""));
+      synth.sort((a, b) => symName(a).localeCompare(symName(b)));
 
       const current = symbolEl.value;
       const currentText = (symbolEl.selectedOptions[0] || {}).textContent || "";
       let resolved = current;
 
-      if (!synth.some(a => a.symbol === current)) {
-        const byName = synth.find(a => a.display_name === currentText.trim());
-        resolved = byName ? byName.symbol : synth[0].symbol;
+      if (!synth.some(a => symCode(a) === current)) {
+        const byName = synth.find(a => symName(a).trim() === currentText.trim());
+        resolved = byName ? symCode(byName) : symCode(synth[0]);
       }
 
       symbolEl.innerHTML = synth
-        .map(a => `<option value="${a.symbol}">${a.display_name}</option>`)
+        .map(a => `<option value="${symCode(a)}">${symName(a)}</option>`)
         .join("");
 
-      symbolEl.value = resolved;
-      if (!symbolEl.value) symbolEl.value = synth[0].symbol;
-
+      symbolEl.value = resolved || symCode(synth[0]);
       return symbolEl.value;
     }
 
+    function adoptSymbol(code) {
+      if (![...symbolEl.options].some(o => o.value === code)) {
+        const opt = document.createElement("option");
+        opt.value = code;
+        opt.textContent = code + " (auto-found)";
+        symbolEl.appendChild(opt);
+      }
+      symbolEl.value = code;
+
+      const s = readSettings();
+      loadSavedHistory(code);
+      rebuildModel(savedDigits, s.modelWindow);
+      initPrevFromSaved();
+    }
+
+    function requestActiveSymbols(socket) {
+      socket.send(JSON.stringify({ active_symbols: "brief" }));
+    }
+
     function handleActiveSymbols(data, socket) {
-      activeSymbols = data.active_symbols || [];
+      const arr = data.active_symbols || data.underlying_symbols || data.symbols || [];
+      activeSymbols = Array.isArray(arr) ? arr : [];
+
       const sym = rebuildSymbolDropdown();
       symbolRetries = 0;
 
+      const synthCount = activeSymbols.filter(isSynthetic).length;
+      pushDebug(`active_symbols: ${activeSymbols.length} entries, ${synthCount} synthetic`);
+
+      if (!activeSymbols.length || !synthCount) {
+        beginProbe(socket);
+        return;
+      }
+
       if (sessionMode === "history") {
         const s = readSettings();
-        setStatus(`Symbol list synced (${activeSymbols.length} active). Using ${sym}. Loading history...`);
+        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}. Loading history...`);
         socket.send(JSON.stringify({
           ticks_history: sym,
           adjust_start_time: 1,
@@ -573,17 +649,54 @@
           style: "ticks"
         }));
       } else if (sessionMode === "live") {
-        setStatus(`Symbol list synced (${activeSymbols.length} active). Using ${sym}. Waiting for ticks...`);
+        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}. Waiting for ticks...`);
         socket.send(JSON.stringify({ ticks: sym, subscribe: 1 }));
       }
-
-      return sym;
     }
 
-    function requestActiveSymbols(socket) {
-      socket.send(JSON.stringify({ active_symbols: "brief" }));
+    // ---------- Probe mode: try known codes until server accepts one ----------
+    function beginProbe(socket) {
+      probing = true;
+      probeIndex = 0;
+      setStatus("Symbol list empty or unreadable — probing known market codes...");
+      probeNext(socket);
     }
-    // -----------------------------------------------
+
+    function probeNext(socket) {
+      if (probeIndex >= CANDIDATE_SYMBOLS.length) {
+        probing = false;
+        pushDebug("probe: all candidates rejected");
+        setStatus(
+          "All known symbol codes were rejected by this server. " +
+          "Try: (1) register a FREE App ID at developers.deriv.com and paste it above, " +
+          "(2) switch network (Wi-Fi <-> mobile data), then retry. " +
+          "Screenshot the Diagnostics box if it persists."
+        );
+        return;
+      }
+
+      probeCandidate = CANDIDATE_SYMBOLS[probeIndex++];
+      setStatus(`Probing market code ${probeCandidate} (${probeIndex}/${CANDIDATE_SYMBOLS.length})...`);
+
+      socket.send(JSON.stringify({
+        ticks_history: probeCandidate,
+        adjust_start_time: 1,
+        count: 500,
+        end: "latest",
+        style: "ticks"
+      }));
+    }
+
+    function acceptProbe(data, socket) {
+      const cand = probeCandidate;
+      probing = false;
+
+      adoptSymbol(cand);
+      pushDebug(`probe: ACCEPTED ${cand}`);
+
+      processHistory(data, socket, sessionMode === "live");
+    }
+    // -------------------------------------------------------------------
 
     function digitsKey(symbol) { return "deriv_lab_digits_" + symbol; }
     function epochKey(symbol) { return "deriv_lab_epoch_" + symbol; }
@@ -696,7 +809,8 @@
       }
 
       const s = readSettings();
-      const url = `wss://ws.derivws.com/websockets/v3?app_id=${encodeURIComponent(s.appId)}`;
+      const url = `${ENDPOINTS[endpointIdx]}?app_id=${encodeURIComponent(s.appId)}`;
+      pushDebug("connect " + url);
 
       const socket = new WebSocket(url);
       ws = socket;
@@ -720,14 +834,19 @@
         try { data = JSON.parse(event.data); } catch (e) { return; }
 
         if (data.error) {
-          const code = data.error.code || "";
-          if (code === "InvalidSymbol" && symbolRetries < 2) {
-            symbolRetries++;
-            setStatus(`API error: ${data.error.message} — re-syncing valid symbol list from server (attempt ${symbolRetries})...`);
-            requestActiveSymbols(socket);
-          } else {
-            setStatus("API error: " + data.error.message + " | Tip: register a free App ID at developers.deriv.com (1089 is a shared test ID) and try another market.");
+          pushDebug(`ERR ${data.error.code || ""}: ${data.error.message}`);
+
+          if (data.error.code === "InvalidSymbol") {
+            if (probing) { probeNext(socket); return; }
+            if (symbolRetries < 2) {
+              symbolRetries++;
+              setStatus(`Symbol rejected — re-syncing list (attempt ${symbolRetries})...`);
+              requestActiveSymbols(socket);
+              return;
+            }
           }
+
+          setStatus("API error: " + data.error.message);
           return;
         }
 
@@ -742,7 +861,15 @@
 
       socket.onerror = () => {
         if (ws !== socket) return;
-        setStatus("WebSocket error.");
+
+        if (endpointIdx < ENDPOINTS.length - 1) {
+          endpointIdx++;
+          pushDebug("endpoint failed, falling back");
+          setStatus("Connection failed — trying alternate Deriv endpoint...");
+          connectWebSocket(handlers);
+        } else {
+          setStatus("WebSocket error on all endpoints. Check network / App ID.");
+        }
       };
     }
 
@@ -750,6 +877,7 @@
       const s = readSettings();
       sessionMode = "history";
       symbolRetries = 0;
+      probing = false;
 
       setStatus("Connecting and syncing symbol list from Deriv...");
 
@@ -764,39 +892,53 @@
             return;
           }
 
-          if (data.msg_type !== "history") return;
-
-          const prices = data?.history?.prices || [];
-          const times = data?.history?.times || [];
-          const pipSize = typeof data.pip_size === "number" ? data.pip_size : 2;
-
-          if (!prices.length) {
-            setStatus("No history returned.");
-            return;
+          if (data.msg_type === "history") {
+            if (probing) { acceptProbe(data, socket); return; }
+            processHistory(data, socket, false);
           }
-
-          const digits = prices.map(price => digitFromTickValue(price, pipSize));
-
-          savedDigits = digits.join("").slice(-s.maxHistory);
-          lastSavedEpoch = times.length ? Number(times[times.length - 1]) : 0;
-
-          persistHistory();
-
-          rebuildModel(savedDigits, s.modelWindow);
-          initPrevFromSaved();
-
-          renderModelInfo();
-          renderPrediction(currentPrediction());
-
-          setStatus(`History loaded and saved: ${savedDigits.length} digits for ${s.symbol}.`);
         }
       });
+    }
+
+    function processHistory(data, socket, subscribeAfter) {
+      const s = readSettings();
+
+      const prices = data?.history?.prices || [];
+      const times = data?.history?.times || [];
+      const pipSize = typeof data.pip_size === "number" ? data.pip_size : livePipSize;
+      if (typeof data.pip_size === "number") livePipSize = data.pip_size;
+
+      if (!prices.length) {
+        setStatus("No history returned.");
+        return;
+      }
+
+      const digits = prices.map(price => digitFromTickValue(price, pipSize));
+
+      savedDigits = digits.join("").slice(-s.maxHistory);
+      lastSavedEpoch = times.length ? Number(times[times.length - 1]) : 0;
+
+      persistHistory();
+
+      rebuildModel(savedDigits, s.modelWindow);
+      initPrevFromSaved();
+
+      renderModelInfo();
+      renderPrediction(currentPrediction());
+
+      setStatus(`History loaded: ${savedDigits.length} digits for ${symbolEl.value}.`);
+
+      if (subscribeAfter) {
+        setStatus(`History loaded. Subscribing live ticks for ${symbolEl.value}...`);
+        socket.send(JSON.stringify({ ticks: symbolEl.value, subscribe: 1 }));
+      }
     }
 
     function startLive() {
       const s = readSettings();
       sessionMode = "live";
       symbolRetries = 0;
+      probing = false;
 
       loadSavedHistory(s.symbol);
       rebuildModel(savedDigits, s.modelWindow);
@@ -826,6 +968,11 @@
             return;
           }
 
+          if (data.msg_type === "history" && probing) {
+            acceptProbe(data, socket);
+            return;
+          }
+
           if (data.msg_type === "tick" && data.tick) {
             symbolRetries = 0;
             handleLiveTick(data.tick);
@@ -836,6 +983,7 @@
 
     function stopLive() {
       sessionMode = null;
+      probing = false;
 
       if (ws) {
         try { ws.close(); } catch (e) { console.error(e); }
@@ -853,7 +1001,9 @@
     function handleLiveTick(tick) {
       const s = readSettings();
 
-      const pipSize = typeof tick.pip_size === "number" ? tick.pip_size : 2;
+      const pipSize = typeof tick.pip_size === "number" ? tick.pip_size : livePipSize;
+      if (typeof tick.pip_size === "number") livePipSize = tick.pip_size;
+
       const digit = digitFromTickValue(tick.quote, pipSize);
       const quoteText = formatQuote(tick.quote, pipSize);
 
@@ -914,12 +1064,13 @@
     }
 
     function digitFromTickValue(value, pipSize) {
+      const ps = (typeof pipSize === "number" ? pipSize : livePipSize);
       let text;
       if (typeof value === "string") text = value;
       else {
         const number = Number(value);
         if (!isFinite(number)) return 0;
-        text = number.toFixed(pipSize);
+        text = number.toFixed(typeof ps === "number" ? ps : 2);
       }
       const digitsOnly = text.replace(/[^0-9]/g, "");
       if (!digitsOnly) return 0;
@@ -929,7 +1080,8 @@
     function formatQuote(value, pipSize) {
       const number = Number(value);
       if (!isFinite(number)) return String(value);
-      return number.toFixed(pipSize);
+      const ps = (typeof pipSize === "number" ? pipSize : livePipSize);
+      return number.toFixed(typeof ps === "number" ? ps : 2);
     }
 
     function currentPrediction() {
@@ -1260,4 +1412,4 @@
     })();
   </script>
 </body>
-                                                        </html>
+            </html>
