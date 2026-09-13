@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deriv Prediction Lab V3.3 - Adaptive</title>
+  <title>Deriv Prediction Lab V3.5 - Adaptive</title>
 
   <style>
     :root {
@@ -154,7 +154,7 @@
 
 <body>
   <div class="container">
-    <h1>Deriv Prediction Lab V3.3 (Stream via History Endpoint)</h1>
+    <h1>Deriv Prediction Lab V3.5 (Polling Live Mode)</h1>
 
     <div class="warning">
       Educational research only. This tool estimates probabilities from past digits and tests historical signals.
@@ -165,7 +165,7 @@
     <div class="card">
       <div class="row">
         <div>
-          <label for="appId">Deriv App ID</label>
+          <label for="appId">Deriv App ID (NUMERIC only, e.g. 1089)</label>
           <input id="appId" value="1089" />
         </div>
 
@@ -204,7 +204,8 @@
       </div>
 
       <div class="status" id="status">
-        Ready. Live mode now streams ticks through the ticks_history endpoint (subscribe:1), which your server accepts.
+        Ready. Live mode first tries a real stream; if the server refuses subscriptions it automatically
+        switches to polling (fetches latest ticks every ~1.2s). App ID must be numeric.
       </div>
     </div>
 
@@ -396,8 +397,8 @@
     <div class="card">
       <div class="label">Model explanation</div>
       <div class="small">
-        Adaptive hybrid digit-transition model. Live streaming uses ticks_history with subscribe:1
-        (single endpoint for history + live ticks), compatible with legacy and new Deriv API formats.
+        Adaptive hybrid digit-transition model. Live data uses a real stream when the server allows it,
+        otherwise automatic polling of the ticks_history endpoint (which your server accepts).
       </div>
     </div>
   </div>
@@ -449,6 +450,10 @@
     let probeCandidate = null;
     let probeCycles = 0;
     let triedFullSymbols = false;
+
+    let pollTimer = null;
+    let pollMode = false;
+    let pendingSubscribe = false;
 
     let livePipSize = null;
     let debugLines = [];
@@ -567,6 +572,15 @@
       };
     }
 
+    function ensureValidAppId() {
+      const raw = appIdEl.value.trim();
+      if (/^\d{1,10}$/.test(raw)) return;
+
+      pushDebug("invalid app_id format: " + raw + " -> using 1089");
+      appIdEl.value = "1089";
+      setStatus("App ID must be NUMERIC (1089 or your registered App ID). A Deriv account ID or token does not work here. Reverted to 1089.");
+    }
+
     // ---------- Symbol helpers (legacy + new API field names) ----------
     function symCode(a) { return a.symbol || a.underlying_symbol || ""; }
     function symName(a) { return a.display_name || a.underlying_symbol_name || symCode(a); }
@@ -623,18 +637,14 @@
       socket.send(JSON.stringify({ active_symbols: mode || "brief" }));
     }
 
-    // Single request for history AND live stream (the endpoint your server accepts)
-    function sendHistoryRequest(socket, sym, subscribe) {
-      const s = readSettings();
-      const req = {
+    function sendHistoryRequest(socket, sym, count) {
+      socket.send(JSON.stringify({
         ticks_history: sym,
         adjust_start_time: 1,
-        count: s.historyCount,
+        count: count,
         end: "latest",
         style: "ticks"
-      };
-      if (subscribe) req.subscribe = 1;
-      socket.send(JSON.stringify(req));
+      }));
     }
 
     function handleActiveSymbols(data, socket) {
@@ -659,18 +669,18 @@
 
       if (sessionMode === "history" || sessionMode === "live") {
         setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}.`);
-        sendHistoryRequest(socket, sym, sessionMode === "live");
+        sendHistoryRequest(socket, sym, readSettings().historyCount);
       }
     }
 
-    // ---------- Probe mode ----------
+    // ---------- Probe mode (plain history requests only) ----------
     function beginProbe(socket) {
       if (probeCycles >= 3) {
         probing = false;
         pushDebug("probe: giving up after 3 cycles");
         setStatus(
           "Server rejected all known symbol codes. " +
-          "Try: (1) register a FREE App ID at developers.deriv.com and paste it above, " +
+          "Try: (1) register a FREE App ID at developers.deriv.com and paste its NUMBER above, " +
           "(2) switch network (Wi-Fi <-> mobile data). Screenshot Diagnostics if it persists."
         );
         return;
@@ -696,16 +706,7 @@
 
       probeCandidate = CANDIDATE_SYMBOLS[probeIndex++];
       setStatus(`Probing market code ${probeCandidate} (${probeIndex}/${CANDIDATE_SYMBOLS.length})...`);
-
-      const req = {
-        ticks_history: probeCandidate,
-        adjust_start_time: 1,
-        count: 500,
-        end: "latest",
-        style: "ticks"
-      };
-      if (sessionMode === "live") req.subscribe = 1;
-      socket.send(JSON.stringify(req));
+      sendHistoryRequest(socket, probeCandidate, 500);
     }
 
     function acceptProbe(data, socket) {
@@ -713,11 +714,67 @@
       probing = false;
 
       adoptSymbol(cand);
-      pushDebug(`probe: ACCEPTED ${cand} (stream=${sessionMode === "live" ? 1 : 0})`);
+      pushDebug(`probe: ACCEPTED ${cand}`);
 
       processHistory(data, socket);
+
+      if (sessionMode === "live") trySubscribe(socket, cand);
     }
-    // -------------------------------
+
+    // ---------- Stream vs polling ----------
+    function trySubscribe(socket, sym) {
+      pendingSubscribe = true;
+      setStatus(`History loaded. Trying real stream for ${sym}...`);
+      socket.send(JSON.stringify({ ticks: sym, subscribe: 1 }));
+    }
+
+    function sendPollRequest(socket) {
+      socket.send(JSON.stringify({
+        ticks_history: symbolEl.value,
+        adjust_start_time: 1,
+        count: 10,
+        end: "latest",
+        style: "ticks"
+      }));
+    }
+
+    function startPolling(socket) {
+      if (pollTimer) return;
+
+      pollMode = true;
+      pushDebug("polling mode started (1.2s interval)");
+      setStatus("Server refuses subscriptions — LIVE VIA POLLING (fetching latest ticks every ~1.2s)...");
+
+      sendPollRequest(socket);
+
+      pollTimer = setInterval(() => {
+        if (socket.readyState === WebSocket.OPEN) sendPollRequest(socket);
+      }, 1200);
+    }
+
+    function stopPolling() {
+      if (pollTimer) {
+        clearInterval(pollTimer);
+        pollTimer = null;
+      }
+      pollMode = false;
+    }
+
+    function handlePollHistory(data) {
+      const prices = data?.history?.prices || [];
+      const times = data?.history?.times || [];
+      const pipSize = typeof data.pip_size === "number" ? data.pip_size : livePipSize;
+      if (typeof data.pip_size === "number") livePipSize = data.pip_size;
+
+      for (let i = 0; i < prices.length; i++) {
+        const epoch = Number(times[i] || 0);
+        if (!epoch || epoch <= lastSavedEpoch) continue;
+
+        const digit = digitFromTickValue(prices[i], pipSize);
+        ingestTick(digit, epoch, formatQuote(prices[i], pipSize));
+      }
+    }
+    // --------------------------
 
     function digitsKey(symbol) { return "deriv_lab_digits_" + symbol; }
     function epochKey(symbol) { return "deriv_lab_epoch_" + symbol; }
@@ -829,6 +886,9 @@
         pingTimer = null;
       }
 
+      stopPolling();
+      pendingSubscribe = false;
+
       const s = readSettings();
       const url = `${ENDPOINTS[endpointIdx]}?app_id=${encodeURIComponent(s.appId)}`;
       pushDebug("connect " + url);
@@ -858,6 +918,12 @@
           pushDebug(`ERR ${data.error.code || ""}: ${data.error.message}`);
 
           if (data.error.code === "InvalidSymbol") {
+            if (pendingSubscribe) {
+              pendingSubscribe = false;
+              pushDebug("subscribe rejected -> polling mode");
+              startPolling(socket);
+              return;
+            }
             if (probing) { probeNext(socket); return; }
             if (symbolRetries < 2) {
               symbolRetries++;
@@ -877,6 +943,7 @@
       socket.onclose = () => {
         if (ws !== socket) return;
         if (pingTimer) { clearInterval(pingTimer); pingTimer = null; }
+        stopPolling();
         setStatus("Disconnected.");
       };
 
@@ -895,6 +962,9 @@
     }
 
     function loadHistory() {
+      ensureValidAppId();
+      endpointIdx = 0;
+
       sessionMode = "history";
       symbolRetries = 0;
       probing = false;
@@ -949,13 +1019,16 @@
       renderPrediction(currentPrediction());
 
       if (sessionMode === "live") {
-        setStatus(`History loaded (${savedDigits.length} digits). Streaming live ticks for ${symbolEl.value}...`);
+        setStatus(`History loaded (${savedDigits.length} digits).`);
       } else {
         setStatus(`History loaded and saved: ${savedDigits.length} digits for ${symbolEl.value}.`);
       }
     }
 
     function startLive() {
+      ensureValidAppId();
+      endpointIdx = 0;
+
       const s = readSettings();
       sessionMode = "live";
       symbolRetries = 0;
@@ -992,11 +1065,18 @@
 
           if (data.msg_type === "history") {
             if (probing) { acceptProbe(data, socket); return; }
+            if (pollMode) { handlePollHistory(data); return; }
             processHistory(data, socket);
+            trySubscribe(socket, symbolEl.value);
             return;
           }
 
           if (data.msg_type === "tick" && data.tick) {
+            pendingSubscribe = false;
+            if (pollMode) {
+              stopPolling();
+              setStatus(`Live: ${symbolEl.value} | real stream active`);
+            }
             symbolRetries = 0;
             handleLiveTick(data.tick);
           }
@@ -1007,6 +1087,8 @@
     function stopLive() {
       sessionMode = null;
       probing = false;
+      pendingSubscribe = false;
+      stopPolling();
 
       if (ws) {
         try { ws.close(); } catch (e) { console.error(e); }
@@ -1022,18 +1104,20 @@
     }
 
     function handleLiveTick(tick) {
-      const s = readSettings();
-
       const pipSize = typeof tick.pip_size === "number" ? tick.pip_size : livePipSize;
       if (typeof tick.pip_size === "number") livePipSize = tick.pip_size;
 
       const digit = digitFromTickValue(tick.quote, pipSize);
-      const quoteText = formatQuote(tick.quote, pipSize);
+      ingestTick(digit, tick.epoch, formatQuote(tick.quote, pipSize));
+    }
+
+    function ingestTick(digit, epoch, quoteText) {
+      const s = readSettings();
 
       lastDigitEl.textContent = String(digit);
-      quoteEl.textContent = quoteText;
+      if (quoteText) quoteEl.textContent = quoteText;
 
-      if (tick.epoch <= lastSavedEpoch) return;
+      if (epoch <= lastSavedEpoch) return;
 
       if (pendingPrediction && pendingPrediction.prev1 !== null) {
         const wasWin = (digit === pendingPrediction.predictedDigit);
@@ -1058,7 +1142,7 @@
 
       savedDigits += String(digit);
       if (savedDigits.length > s.maxHistory) savedDigits = savedDigits.slice(-s.maxHistory);
-      lastSavedEpoch = Number(tick.epoch);
+      lastSavedEpoch = epoch;
 
       rebuildModel(savedDigits, s.modelWindow);
       initPrevFromSaved();
