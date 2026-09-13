@@ -1,0 +1,1348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deriv Prediction Lab V2 - Educational</title>
+
+  <style>
+    :root {
+      --bg: #060a12;
+      --card: #0d1526;
+      --border: #22304f;
+      --text: #eaf0ff;
+      --muted: #93a4c3;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #fbbf24;
+      --blue: #3b82f6;
+      --purple: #a78bfa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .warning {
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      color: #ffe3a3;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .row, .row-3, .row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #081020;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    button {
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .blue { background: var(--blue); }
+    .green { background: var(--green); color: #041407; }
+    .purple { background: var(--purple); color: #12081f; }
+    .red { background: var(--red); color: #fff; }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 24px;
+      font-weight: 800;
+      word-break: break-word;
+    }
+
+    .greenText { color: var(--green); }
+    .redText { color: var(--red); }
+    .yellowText { color: var(--yellow); }
+    .blueText { color: var(--blue); }
+    .purpleText { color: var(--purple); }
+
+    .prob-row {
+      display: grid;
+      grid-template-columns: 40px 1fr 90px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .prob-digit {
+      text-align: center;
+      font-weight: bold;
+      background: #081020;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 0;
+    }
+
+    .prob-bar {
+      height: 15px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #081020;
+      border: 1px solid var(--border);
+    }
+
+    .prob-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #22c55e);
+    }
+
+    .prob-fill.best {
+      background: linear-gradient(90deg, #fbbf24, #ef4444);
+    }
+
+    .prob-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .alert-log {
+      max-height: 180px;
+      overflow: auto;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .backtest-results {
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #081020;
+    }
+
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Deriv Prediction Lab V2</h1>
+
+    <div class="warning">
+      Educational research only. This tool estimates probabilities from past digits and tests historical signals.
+      It does not guarantee future results and it does not place trades.
+      Deriv digit markets are high risk. Use backtests carefully and do not treat this as financial advice.
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="appId">Deriv App ID</label>
+          <input id="appId" value="1089" />
+        </div>
+
+        <div>
+          <label for="symbol">Market</label>
+          <select id="symbol">
+            <option value="R_10">Volatility 10 Index</option>
+            <option value="R_25">Volatility 25 Index</option>
+            <option value="R_50">Volatility 50 Index</option>
+            <option value="R_75">Volatility 75 Index</option>
+            <option value="R_100">Volatility 100 Index</option>
+            <option value="1HZ10V">Volatility 10 (1s) Index</option>
+            <option value="1HZ25V">Volatility 25 (1s) Index</option>
+            <option value="1HZ50V">Volatility 50 (1s) Index</option>
+            <option value="1HZ75V">Volatility 75 (1s) Index</option>
+            <option value="1HZ100V">Volatility 100 (1s) Index</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="historyCount">API History Count</label>
+          <input id="historyCount" type="number" value="1000" min="100" max="5000" step="100" />
+        </div>
+
+        <div>
+          <label for="maxHistory">Max Saved Digits</label>
+          <input id="maxHistory" type="number" value="50000" min="1000" max="300000" step="1000" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="loadHistoryBtn" class="purple">Load History + Save</button>
+        <button id="startLiveBtn" class="green">Start Live</button>
+        <button id="stopLiveBtn" class="red">Stop Live</button>
+        <button id="clearHistoryBtn" class="red">Clear Saved History</button>
+      </div>
+
+      <div class="status" id="status">
+        Ready. Load history first, then start live. History is saved in this browser only.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row-3">
+        <div>
+          <label for="smoothing">Model Smoothing</label>
+          <input id="smoothing" type="number" value="1" min="0.001" step="0.1" />
+        </div>
+
+        <div>
+          <label for="strength2">2-Digit Model Strength</label>
+          <input id="strength2" type="number" value="50" min="1" step="1" />
+        </div>
+
+        <div>
+          <label for="strength1">1-Digit Fallback Strength</label>
+          <input id="strength1" type="number" value="30" min="1" step="1" />
+        </div>
+      </div>
+
+      <div class="row-2" style="margin-top:10px;">
+        <div class="checkbox-row">
+          <input id="use2" type="checkbox" checked />
+          <span class="small">Use 2-digit hybrid model</span>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="soundEnabled" type="checkbox" checked />
+          <span class="small">Enable alert sound</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="matchesPayout">Matches Payout Multiplier</label>
+          <input id="matchesPayout" type="number" value="9.5" min="1.01" step="0.01" />
+        </div>
+
+        <div>
+          <label for="differsPayout">Differs Payout Multiplier</label>
+          <input id="differsPayout" type="number" value="1.05" min="1.01" step="0.01" />
+        </div>
+
+        <div>
+          <label for="edgeThreshold">Alert Edge Threshold %</label>
+          <input id="edgeThreshold" type="number" value="0.5" min="0" step="0.1" />
+        </div>
+
+        <div>
+          <label for="alertCooldown">Alert Cooldown Seconds</label>
+          <input id="alertCooldown" type="number" value="30" min="1" step="1" />
+        </div>
+      </div>
+
+      <div class="row-2">
+        <button id="enableAlertsBtn" class="blue">Enable Alerts</button>
+        <button id="testAlertBtn" class="blue">Test Alert</button>
+      </div>
+
+      <div class="status" id="alertStatus">
+        Alerts disabled. Enable alerts to allow browser notifications.
+      </div>
+
+      <div class="alert-log" id="alertLog"></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Next 10-second boundary</div>
+        <div class="value greenText" id="countdown">--.--s</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Last digit</div>
+        <div class="value yellowText" id="lastDigit">-</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Predicted next digit</div>
+        <div class="value redText" id="predictedDigit">-</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Estimated probability</div>
+        <div class="value blueText" id="predictedProbability">-</div>
+      </div>
+    </div>
+
+    <div class="row-3">
+      <div class="stat">
+        <div class="label">Saved digits</div>
+        <div class="value purpleText" id="savedCount">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Live updates</div>
+        <div class="value blueText" id="liveUpdates">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="label">Last saved epoch</div>
+        <div class="value yellowText" id="lastEpoch">-</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Edge info</div>
+      <div class="small" id="edgeInfo">Waiting for data.</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Latest quote</div>
+      <div class="value yellowText" id="quote">Waiting...</div>
+    </div>
+
+    <div class="card">
+      <div class="label">
+        Predicted probabilities for next digit
+        — historical/statistical estimate only
+      </div>
+      <div id="probabilities">
+        <div class="small">Load history and/or start live ticks.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row-2">
+        <div>
+          <label for="trainSize">Backtest Training Size</label>
+          <input id="trainSize" type="number" value="2000" min="100" step="100" />
+        </div>
+
+        <div>
+          <label for="testLimit">Backtest Test Limit</label>
+          <input id="testLimit" type="number" value="5000" min="100" step="100" />
+        </div>
+      </div>
+
+      <button id="runBacktestBtn" class="purple">Run Backtest On Saved History</button>
+
+      <div class="status">
+        Backtest approximates next-tick prediction using saved digit history.
+        It may not match exact Deriv contract entry/exit rules.
+      </div>
+
+      <div class="backtest-results" id="backtestResults">
+        No backtest yet.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Model explanation</div>
+      <div class="small">
+        This version uses a hybrid digit-transition model.
+        It studies what digit followed the previous digit, and also what digit followed the previous two digits.
+        When there is not enough 2-digit evidence, it falls back to the 1-digit model and uniform baseline.
+        Alerts only fire when estimated probability exceeds the payout break-even rate plus your edge threshold.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    let ws = null;
+    let pingTimer = null;
+    let timeOffset = 0;
+    let timeSentAt = 0;
+
+    let savedDigits = "";
+    let lastSavedEpoch = 0;
+
+    let prevLive1 = null;
+    let prevLive2 = null;
+    let liveUpdateCount = 0;
+
+    let counts1 = createCounts1();
+    let counts2 = createCounts2();
+
+    let alertsEnabled = false;
+    let lastAlertAt = 0;
+    let audioCtx = null;
+
+    const appIdEl = $("appId");
+    const symbolEl = $("symbol");
+    const historyCountEl = $("historyCount");
+    const maxHistoryEl = $("maxHistory");
+
+    const loadHistoryBtn = $("loadHistoryBtn");
+    const startLiveBtn = $("startLiveBtn");
+    const stopLiveBtn = $("stopLiveBtn");
+    const clearHistoryBtn = $("clearHistoryBtn");
+
+    const statusEl = $("status");
+
+    const savedCountEl = $("savedCount");
+    const liveUpdatesEl = $("liveUpdates");
+    const lastEpochEl = $("lastEpoch");
+
+    const smoothingEl = $("smoothing");
+    const strength2El = $("strength2");
+    const strength1El = $("strength1");
+    const use2El = $("use2");
+    const soundEnabledEl = $("soundEnabled");
+
+    const matchesPayoutEl = $("matchesPayout");
+    const differsPayoutEl = $("differsPayout");
+    const edgeThresholdEl = $("edgeThreshold");
+    const alertCooldownEl = $("alertCooldown");
+
+    const enableAlertsBtn = $("enableAlertsBtn");
+    const testAlertBtn = $("testAlertBtn");
+    const alertStatusEl = $("alertStatus");
+    const alertLogEl = $("alertLog");
+
+    const countdownEl = $("countdown");
+    const lastDigitEl = $("lastDigit");
+    const predictedDigitEl = $("predictedDigit");
+    const predictedProbabilityEl = $("predictedProbability");
+    const edgeInfoEl = $("edgeInfo");
+    const quoteEl = $("quote");
+    const probabilitiesEl = $("probabilities");
+
+    const trainSizeEl = $("trainSize");
+    const testLimitEl = $("testLimit");
+    const runBacktestBtn = $("runBacktestBtn");
+    const backtestResultsEl = $("backtestResults");
+
+    loadHistoryBtn.addEventListener("click", loadHistory);
+    startLiveBtn.addEventListener("click", startLive);
+    stopLiveBtn.addEventListener("click", stopLive);
+    clearHistoryBtn.addEventListener("click", clearHistory);
+    runBacktestBtn.addEventListener("click", runBacktest);
+    enableAlertsBtn.addEventListener("click", enableAlerts);
+    testAlertBtn.addEventListener("click", () => doLocalAlert("Test alert from Deriv Prediction Lab"));
+
+    symbolEl.addEventListener("change", () => {
+      stopLive();
+
+      const s = readSettings();
+      loadSavedHistory(s.symbol);
+      rebuildModel(savedDigits);
+      initPrevFromSaved();
+      renderModelInfo();
+      renderPrediction(currentPrediction());
+
+      setStatus(`Switched to ${s.symbol}. Saved history loaded from browser storage.`);
+    });
+
+    window.addEventListener("beforeunload", () => {
+      try {
+        persistHistory();
+      } catch (e) {
+        // Ignore storage errors on close.
+      }
+    });
+
+    function setStatus(message) {
+      statusEl.textContent = message;
+    }
+
+    function readSettings() {
+      return {
+        appId: appIdEl.value.trim() || "1089",
+        symbol: symbolEl.value,
+        historyCount: Math.min(Math.max(Number(historyCountEl.value) || 1000, 100), 5000),
+        maxHistory: Math.min(Math.max(Number(maxHistoryEl.value) || 50000, 1000), 300000),
+
+        smoothing: Math.max(0.001, Number(smoothingEl.value) || 1),
+        strength2: Math.max(1, Number(strength2El.value) || 50),
+        strength1: Math.max(1, Number(strength1El.value) || 30),
+        use2: use2El.checked,
+
+        matchesPayout: Math.max(1.01, Number(matchesPayoutEl.value) || 9.5),
+        differsPayout: Math.max(1.01, Number(differsPayoutEl.value) || 1.05),
+        edgeThreshold: Math.max(0, Number(edgeThresholdEl.value) || 0) / 100,
+        alertCooldown: Math.max(1, Number(alertCooldownEl.value) || 30),
+        soundEnabled: soundEnabledEl.checked
+      };
+    }
+
+    function digitsKey(symbol) {
+      return "deriv_lab_digits_" + symbol;
+    }
+
+    function epochKey(symbol) {
+      return "deriv_lab_epoch_" + symbol;
+    }
+
+    function loadSavedHistory(symbol) {
+      savedDigits = (localStorage.getItem(digitsKey(symbol)) || "").replace(/[^0-9]/g, "");
+      lastSavedEpoch = Number(localStorage.getItem(epochKey(symbol)) || 0);
+    }
+
+    function persistHistory() {
+      const s = readSettings();
+
+      try {
+        savedDigits = savedDigits.slice(-s.maxHistory);
+
+        localStorage.setItem(digitsKey(s.symbol), savedDigits);
+        localStorage.setItem(epochKey(s.symbol), String(lastSavedEpoch));
+      } catch (e) {
+        try {
+          savedDigits = savedDigits.slice(-Math.floor(s.maxHistory / 2));
+
+          localStorage.setItem(digitsKey(s.symbol), savedDigits);
+          localStorage.setItem(epochKey(s.symbol), String(lastSavedEpoch));
+        } catch (e2) {
+          console.error("Storage error:", e2);
+        }
+      }
+    }
+
+    function clearHistory() {
+      const s = readSettings();
+
+      savedDigits = "";
+      lastSavedEpoch = 0;
+      liveUpdateCount = 0;
+
+      prevLive1 = null;
+      prevLive2 = null;
+
+      persistHistory();
+
+      rebuildModel(savedDigits);
+      renderModelInfo();
+      renderPrediction(currentPrediction());
+
+      setStatus(`Saved history cleared for ${s.symbol}.`);
+    }
+
+    function createCounts1() {
+      return Array.from({ length: 10 }, () => Array(10).fill(0));
+    }
+
+    function createCounts2() {
+      return Array.from({ length: 100 }, () => Array(10).fill(0));
+    }
+
+    function sumRow(row) {
+      return row.reduce((a, b) => a + b, 0);
+    }
+
+    function normalizeRow(row, alpha) {
+      const total = sumRow(row) + (10 * alpha);
+
+      return row.map(count => (count + alpha) / total);
+    }
+
+    function argmax(arr) {
+      let best = 0;
+
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] > arr[best]) {
+          best = i;
+        }
+      }
+
+      return best;
+    }
+
+    function argmin(arr) {
+      let best = 0;
+
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < arr[best]) {
+          best = i;
+        }
+      }
+
+      return best;
+    }
+
+    function rebuildModel(digitsStr) {
+      counts1 = createCounts1();
+      counts2 = createCounts2();
+
+      const n = digitsStr.length;
+
+      for (let i = 1; i < n; i++) {
+        const prev = Number(digitsStr[i - 1]);
+        const next = Number(digitsStr[i]);
+
+        counts1[prev][next]++;
+      }
+
+      for (let i = 2; i < n; i++) {
+        const prev2 = Number(digitsStr[i - 2]);
+        const prev1 = Number(digitsStr[i - 1]);
+        const next = Number(digitsStr[i]);
+
+        counts2[prev2 * 10 + prev1][next]++;
+      }
+    }
+
+    function initPrevFromSaved() {
+      const n = savedDigits.length;
+
+      prevLive1 = n >= 1 ? Number(savedDigits[n - 1]) : null;
+      prevLive2 = n >= 2 ? Number(savedDigits[n - 2]) : null;
+    }
+
+    function connectWebSocket(handlers) {
+      if (ws) {
+        ws.onopen = null;
+        ws.onmessage = null;
+        ws.onclose = null;
+        ws.onerror = null;
+
+        try {
+          ws.close();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (pingTimer) {
+        clearInterval(pingTimer);
+        pingTimer = null;
+      }
+
+      const s = readSettings();
+      const url = `wss://ws.derivws.com/websockets/v3?app_id=${encodeURIComponent(s.appId)}`;
+
+      const socket = new WebSocket(url);
+      ws = socket;
+
+      socket.onopen = () => {
+        if (ws !== socket) return;
+
+        pingTimer = setInterval(() => {
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ ping: 1 }));
+          }
+        }, 30000);
+
+        handlers.onOpen(socket);
+      };
+
+      socket.onmessage = (event) => {
+        if (ws !== socket) return;
+
+        let data;
+
+        try {
+          data = JSON.parse(event.data);
+        } catch (e) {
+          return;
+        }
+
+        if (data.error) {
+          setStatus("API error: " + data.error.message);
+          return;
+        }
+
+        handlers.onMessage(data, socket);
+      };
+
+      socket.onclose = () => {
+        if (ws !== socket) return;
+
+        if (pingTimer) {
+          clearInterval(pingTimer);
+          pingTimer = null;
+        }
+
+        setStatus("Disconnected.");
+      };
+
+      socket.onerror = () => {
+        if (ws !== socket) return;
+        setStatus("WebSocket error.");
+      };
+    }
+
+    function loadHistory() {
+      const s = readSettings();
+
+      setStatus("Loading history from Deriv...");
+
+      connectWebSocket({
+        onOpen(socket) {
+          socket.send(JSON.stringify({
+            ticks_history: s.symbol,
+            adjust_start_time: 1,
+            count: s.historyCount,
+            end: "latest",
+            style: "ticks"
+          }));
+        },
+
+        onMessage(data) {
+          if (data.msg_type !== "history") return;
+
+          const prices = data?.history?.prices || [];
+          const times = data?.history?.times || [];
+          const pipSize = typeof data.pip_size === "number" ? data.pip_size : 2;
+
+          if (!prices.length) {
+            setStatus("No history returned.");
+            return;
+          }
+
+          const digits = prices.map(price => digitFromTickValue(price, pipSize));
+
+          savedDigits = digits.join("").slice(-s.maxHistory);
+          lastSavedEpoch = times.length ? Number(times[times.length - 1]) : 0;
+
+          persistHistory();
+
+          rebuildModel(savedDigits);
+          initPrevFromSaved();
+
+          renderModelInfo();
+          renderPrediction(currentPrediction());
+
+          setStatus(`History loaded and saved: ${savedDigits.length} digits for ${s.symbol}.`);
+        }
+      });
+    }
+
+    function startLive() {
+      const s = readSettings();
+
+      loadSavedHistory(s.symbol);
+      rebuildModel(savedDigits);
+      initPrevFromSaved();
+
+      renderModelInfo();
+      renderPrediction(currentPrediction());
+
+      setStatus(`Starting live ticks for ${s.symbol}...`);
+
+      connectWebSocket({
+        onOpen(socket) {
+          timeSentAt = Date.now();
+
+          socket.send(JSON.stringify({ time: 1 }));
+          socket.send(JSON.stringify({ ticks: s.symbol, subscribe: 1 }));
+        },
+
+        onMessage(data) {
+          if (data.msg_type === "time") {
+            const latency = Date.now() - timeSentAt;
+            timeOffset = data.time * 1000 + Math.round(latency / 2) - Date.now();
+
+            setStatus(`Live: ${s.symbol} | Time synced`);
+          }
+
+          if (data.msg_type === "tick" && data.tick) {
+            handleLiveTick(data.tick);
+          }
+        }
+      });
+    }
+
+    function stopLive() {
+      if (ws) {
+        try {
+          ws.close();
+        } catch (e) {
+          console.error(e);
+        }
+
+        ws = null;
+      }
+
+      if (pingTimer) {
+        clearInterval(pingTimer);
+        pingTimer = null;
+      }
+
+      setStatus("Live stopped.");
+    }
+
+    function handleLiveTick(tick) {
+      const s = readSettings();
+
+      const pipSize = typeof tick.pip_size === "number" ? tick.pip_size : 2;
+      const digit = digitFromTickValue(tick.quote, pipSize);
+      const quoteText = formatQuote(tick.quote, pipSize);
+
+      lastDigitEl.textContent = String(digit);
+      quoteEl.textContent = quoteText;
+
+      if (tick.epoch <= lastSavedEpoch) {
+        return;
+      }
+
+      savedDigits += String(digit);
+
+      if (savedDigits.length > s.maxHistory) {
+        savedDigits = savedDigits.slice(-s.maxHistory);
+      }
+
+      lastSavedEpoch = Number(tick.epoch);
+
+      if (prevLive1 !== null) {
+        counts1[prevLive1][digit]++;
+      }
+
+      if (prevLive1 !== null && prevLive2 !== null) {
+        counts2[prevLive2 * 10 + prevLive1][digit]++;
+      }
+
+      prevLive2 = prevLive1;
+      prevLive1 = digit;
+
+      liveUpdateCount++;
+
+      if (liveUpdateCount % 20 === 0) {
+        persistHistory();
+      }
+
+      renderModelInfo();
+
+      const probs = currentPrediction();
+      renderPrediction(probs);
+      checkAlerts(probs, s);
+    }
+
+    function digitFromTickValue(value, pipSize) {
+      let text;
+
+      if (typeof value === "string") {
+        text = value;
+      } else {
+        const number = Number(value);
+
+        if (!isFinite(number)) {
+          return 0;
+        }
+
+        text = number.toFixed(pipSize);
+      }
+
+      const digitsOnly = text.replace(/[^0-9]/g, "");
+
+      if (!digitsOnly) {
+        return 0;
+      }
+
+      return Number(digitsOnly[digitsOnly.length - 1]);
+    }
+
+    function formatQuote(value, pipSize) {
+      const number = Number(value);
+
+      if (!isFinite(number)) {
+        return String(value);
+      }
+
+      return number.toFixed(pipSize);
+    }
+
+    function currentPrediction() {
+      return predictModel(prevLive2, prevLive1, counts1, counts2, readSettings());
+    }
+
+    function predictModel(prev2, prev1, c1, c2, settings) {
+      const uniform = Array(10).fill(0.1);
+
+      if (prev1 === null || prev1 === undefined) {
+        return uniform;
+      }
+
+      const p1 = normalizeRow(c1[prev1], settings.smoothing);
+
+      if (!settings.use2 || prev2 === null || prev2 === undefined) {
+        return p1;
+      }
+
+      const idx = prev2 * 10 + prev1;
+      const row2 = c2[idx];
+
+      const total2 = sumRow(row2);
+      const total1 = sumRow(c1[prev1]);
+
+      const p2 = normalizeRow(row2, settings.smoothing);
+
+      const w2 = total2 / (total2 + settings.strength2);
+      const rawW1 = total1 / (total1 + settings.strength1);
+      const w1 = (1 - w2) * rawW1;
+      const w0 = Math.max(0, 1 - w2 - w1);
+
+      return p2.map((value, i) => {
+        return (value * w2) + (p1[i] * w1) + (uniform[i] * w0);
+      });
+    }
+
+    function renderModelInfo() {
+      savedCountEl.textContent = String(savedDigits.length);
+      liveUpdatesEl.textContent = String(liveUpdateCount);
+      lastEpochEl.textContent = lastSavedEpoch
+        ? new Date(lastSavedEpoch * 1000).toLocaleTimeString()
+        : "-";
+    }
+
+    function renderPrediction(probs) {
+      if (prevLive1 === null || prevLive1 === undefined) {
+        predictedDigitEl.textContent = "-";
+        predictedProbabilityEl.textContent = "-";
+        edgeInfoEl.textContent = "Waiting for at least one tick.";
+        probabilitiesEl.innerHTML = '<div class="small">Waiting for data.</div>';
+        return;
+      }
+
+      const s = readSettings();
+
+      const bestDigit = argmax(probs);
+      const avoidDigit = argmin(probs);
+
+      const bestProb = probs[bestDigit];
+      const avoidProb = probs[avoidDigit];
+      const differsWinProb = 1 - avoidProb;
+
+      const breakEvenMatches = 1 / s.matchesPayout;
+      const breakEvenDiffers = 1 / s.differsPayout;
+
+      const matchesEdge = (bestProb - breakEvenMatches) * 100;
+      const differsEdge = (differsWinProb - breakEvenDiffers) * 100;
+
+      predictedDigitEl.textContent = String(bestDigit);
+      predictedProbabilityEl.textContent = (bestProb * 100).toFixed(2) + "%";
+
+      edgeInfoEl.innerHTML =
+        `Matches best digit: <b>${bestDigit}</b> | ` +
+        `Estimated prob: <b>${(bestProb * 100).toFixed(2)}%</b> | ` +
+        `Break-even: <b>${(breakEvenMatches * 100).toFixed(2)}%</b> | ` +
+        `Edge: <b class="${matchesEdge >= 0 ? "greenText" : "redText"}">${matchesEdge.toFixed(2)}%</b><br>` +
+        `Differs avoid digit: <b>${avoidDigit}</b> | ` +
+        `Estimated differs win prob: <b>${(differsWinProb * 100).toFixed(2)}%</b> | ` +
+        `Break-even: <b>${(breakEvenDiffers * 100).toFixed(2)}%</b> | ` +
+        `Edge: <b class="${differsEdge >= 0 ? "greenText" : "redText"}">${differsEdge.toFixed(2)}%</b>`;
+
+      const rows = probs.map((probability, digit) => {
+        const percent = (probability * 100).toFixed(2);
+        const isBest = digit === bestDigit;
+
+        return `
+          <div class="prob-row">
+            <div class="prob-digit">${digit}</div>
+            <div class="prob-bar">
+              <div class="prob-fill ${isBest ? "best" : ""}" style="width:${percent}%"></div>
+            </div>
+            <div class="prob-label">${percent}%</div>
+          </div>
+        `;
+      });
+
+      probabilitiesEl.innerHTML = rows.join("");
+    }
+
+    async function enableAlerts() {
+      if (!("Notification" in window)) {
+        alertsEnabled = true;
+        alertStatusEl.textContent = "Browser notifications are not supported, but in-page alerts are enabled.";
+        return;
+      }
+
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+        alertsEnabled = true;
+        alertStatusEl.textContent = "Browser notifications enabled. Alerts will appear when edge conditions are met.";
+      } else {
+        alertsEnabled = true;
+        alertStatusEl.textContent = "Notification permission was not granted. In-page alerts are still enabled.";
+      }
+    }
+
+    function checkAlerts(probs, settings) {
+      if (!alertsEnabled) return;
+
+      if (prevLive1 === null || prevLive1 === undefined) return;
+
+      const now = Date.now();
+
+      if (now - lastAlertAt < settings.alertCooldown * 1000) return;
+
+      const bestDigit = argmax(probs);
+      const avoidDigit = argmin(probs);
+
+      const bestProb = probs[bestDigit];
+      const avoidProb = probs[avoidDigit];
+      const differsWinProb = 1 - avoidProb;
+
+      const breakEvenMatches = 1 / settings.matchesPayout;
+      const breakEvenDiffers = 1 / settings.differsPayout;
+
+      const messages = [];
+
+      if (bestProb > breakEvenMatches + settings.edgeThreshold) {
+        messages.push(
+          `Matches research signal: digit ${bestDigit} estimated ${(bestProb * 100).toFixed(2)}% ` +
+          `vs break-even ${(breakEvenMatches * 100).toFixed(2)}%`
+        );
+      }
+
+      if (differsWinProb > breakEvenDiffers + settings.edgeThreshold) {
+        messages.push(
+          `Differs research signal: avoid digit ${avoidDigit}, estimated win ${(differsWinProb * 100).toFixed(2)}% ` +
+          `vs break-even ${(breakEvenDiffers * 100).toFixed(2)}%`
+        );
+      }
+
+      if (!messages.length) return;
+
+      lastAlertAt = now;
+
+      const alertText = messages.join("\n");
+
+      addAlertLog(alertText);
+
+      if (settings.soundEnabled) {
+        beep();
+      }
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification("Deriv research alert", {
+            body: alertText
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function doLocalAlert(text) {
+      addAlertLog(text);
+
+      const s = readSettings();
+
+      if (s.soundEnabled) {
+        beep();
+      }
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification("Deriv research alert", {
+            body: text
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function addAlertLog(text) {
+      const time = new Date().toLocaleTimeString();
+
+      alertLogEl.innerHTML =
+        `<div>[${time}] ${text.replace(/\n/g, "<br>")}</div>` +
+        alertLogEl.innerHTML;
+    }
+
+    function beep() {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+
+        const oscillator = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        oscillator.frequency.value = 880;
+        gain.gain.value = 0.05;
+
+        oscillator.start();
+
+        setTimeout(() => {
+          oscillator.stop();
+        }, 280);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function runBacktest() {
+      const s = readSettings();
+
+      if (!savedDigits) {
+        loadSavedHistory(s.symbol);
+      }
+
+      const digits = savedDigits.split("").map(Number);
+
+      if (digits.length < 300) {
+        backtestResultsEl.textContent =
+          "Not enough saved history. Load more history or keep live running to collect more digits.";
+        return;
+      }
+
+      const trainInput = Math.max(100, Number(trainSizeEl.value) || 2000);
+      const testInput = Math.max(100, Number(testLimitEl.value) || 5000);
+
+      const trainSize = Math.min(trainInput, digits.length - 100);
+      const end = Math.min(digits.length - 1, trainSize + testInput);
+
+      const local1 = createCounts1();
+      const local2 = createCounts2();
+
+      for (let i = 1; i < trainSize; i++) {
+        local1[digits[i - 1]][digits[i]]++;
+      }
+
+      for (let i = 2; i < trainSize; i++) {
+        local2[digits[i - 2] * 10 + digits[i - 1]][digits[i]]++;
+      }
+
+      const matches = {
+        signals: 0,
+        wins: 0,
+        profit: 0,
+        equity: 0,
+        peak: 0,
+        maxDD: 0
+      };
+
+      const differs = {
+        signals: 0,
+        wins: 0,
+        profit: 0,
+        equity: 0,
+        peak: 0,
+        maxDD: 0
+      };
+
+      for (let i = trainSize; i < end; i++) {
+        const prev1 = digits[i];
+        const prev2 = i > 0 ? digits[i - 1] : null;
+        const actual = digits[i + 1];
+
+        const probs = predictModel(prev2, prev1, local1, local2, s);
+
+        const bestDigit = argmax(probs);
+        const breakEvenMatches = 1 / s.matchesPayout;
+
+        if (probs[bestDigit] > breakEvenMatches + s.edgeThreshold) {
+          updateTradeStats(matches, actual === bestDigit, s.matchesPayout);
+        }
+
+        const avoidDigit = argmin(probs);
+        const differsWinProb = 1 - probs[avoidDigit];
+        const breakEvenDiffers = 1 / s.differsPayout;
+
+        if (differsWinProb > breakEvenDiffers + s.edgeThreshold) {
+          updateTradeStats(differs, actual !== avoidDigit, s.differsPayout);
+        }
+
+        local1[prev1][actual]++;
+
+        if (prev2 !== null) {
+          local2[prev2 * 10 + prev1][actual]++;
+        }
+      }
+
+      renderBacktestResults(end - trainSize, matches, differs, s);
+    }
+
+    function updateTradeStats(stats, win, payout) {
+      stats.signals++;
+
+      if (win) {
+        stats.wins++;
+        stats.profit += payout - 1;
+        stats.equity += payout - 1;
+      } else {
+        stats.profit -= 1;
+        stats.equity -= 1;
+      }
+
+      if (stats.equity > stats.peak) {
+        stats.peak = stats.equity;
+      }
+
+      const drawdown = stats.peak - stats.equity;
+
+      if (drawdown > stats.maxDD) {
+        stats.maxDD = drawdown;
+      }
+    }
+
+    function renderBacktestResults(testedTicks, matches, differs, settings) {
+      const breakEvenMatches = (100 / settings.matchesPayout).toFixed(2) + "%";
+      const breakEvenDiffers = (100 / settings.differsPayout).toFixed(2) + "%";
+
+      const formatStats = (label, stats, breakEven) => {
+        const winRate = stats.signals
+          ? ((stats.wins / stats.signals) * 100).toFixed(2) + "%"
+          : "-";
+
+        return (
+          `${label}\n` +
+          `Signals: ${stats.signals}\n` +
+          `Wins: ${stats.wins}\n` +
+          `Win rate: ${winRate}\n` +
+          `Break-even required: ${breakEven}\n` +
+          `Profit units: ${stats.profit.toFixed(2)}\n` +
+          `Max drawdown units: ${stats.maxDD.toFixed(2)}\n`
+        );
+      };
+
+      backtestResultsEl.textContent =
+        `Backtest completed.\n` +
+        `Saved digits used: ${savedDigits.length}\n` +
+        `Tested ticks: ${testedTicks}\n` +
+        `Edge threshold: ${(settings.edgeThreshold * 100).toFixed(2)}%\n\n` +
+        formatStats("Matches", matches, breakEvenMatches) +
+        `\n` +
+        formatStats("Differs", differs, breakEvenDiffers) +
+        `\nNote: This is a next-tick approximation, not necessarily the exact Deriv contract tick used for entry/exit.`;
+    }
+
+    function updateCountdown() {
+      const serverMs = Date.now() + timeOffset;
+
+      const nextBoundary =
+        (Math.floor(serverMs / 10000) + 1) * 10000;
+
+      const remainingMs = Math.max(0, nextBoundary - serverMs);
+      const remainingSeconds = remainingMs / 1000;
+
+      countdownEl.textContent = remainingSeconds.toFixed(2) + "s";
+
+      if (remainingSeconds <= 3) {
+        countdownEl.classList.remove("greenText");
+        countdownEl.classList.add("redText");
+      } else {
+        countdownEl.classList.remove("redText");
+        countdownEl.classList.add("greenText");
+      }
+
+      requestAnimationFrame(updateCountdown);
+    }
+
+    // Initial load
+    (function init() {
+      const s = readSettings();
+
+      loadSavedHistory(s.symbol);
+      rebuildModel(savedDigits);
+      initPrevFromSaved();
+
+      renderModelInfo();
+      renderPrediction(currentPrediction());
+      updateCountdown();
+    })();
+  </script>
+</body>
+</html>
