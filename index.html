@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,10 +20,28 @@
       --purple: #a78bfa;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 12px; }
-    .container { max-width: 980px; margin: 0 auto; }
-    h1 { font-size: 22px; margin-bottom: 8px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
 
     .warning {
       background: rgba(251, 191, 36, 0.12);
@@ -43,17 +62,42 @@
       margin-bottom: 12px;
     }
 
-    .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-
-    @media (max-width: 900px) {
-      .row, .row-3, .row-2 { grid-template-columns: 1fr; }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
     }
 
-    label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
 
-    input, select, button {
+    .row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .row,
+      .row-3,
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input,
+    select,
+    button {
       width: 100%;
       padding: 12px;
       border-radius: 12px;
@@ -64,14 +108,38 @@
       outline: none;
     }
 
-    button { border: none; font-weight: bold; cursor: pointer; margin-top: 8px; }
+    button {
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
 
-    .blue { background: var(--blue); }
-    .green { background: var(--green); color: #041407; }
-    .purple { background: var(--purple); color: #12081f; }
-    .red { background: var(--red); color: #fff; }
+    .blue {
+      background: var(--blue);
+    }
 
-    .status { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .green {
+      background: var(--green);
+      color: #041407;
+    }
+
+    .purple {
+      background: var(--purple);
+      color: #12081f;
+    }
+
+    .red {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
 
     .stats {
       display: grid;
@@ -88,16 +156,45 @@
       text-align: center;
     }
 
-    .stat .label { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
-    .stat .value { font-size: 24px; font-weight: 800; word-break: break-word; }
+    .stat .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
 
-    .greenText { color: var(--green); }
-    .redText { color: var(--red); }
-    .yellowText { color: var(--yellow); }
-    .blueText { color: var(--blue); }
-    .purpleText { color: var(--purple); }
+    .stat .value {
+      font-size: 24px;
+      font-weight: 800;
+      word-break: break-word;
+    }
 
-    .prob-row { display: grid; grid-template-columns: 40px 1fr 90px; gap: 10px; align-items: center; margin-bottom: 8px; }
+    .greenText {
+      color: var(--green);
+    }
+
+    .redText {
+      color: var(--red);
+    }
+
+    .yellowText {
+      color: var(--yellow);
+    }
+
+    .blueText {
+      color: var(--blue);
+    }
+
+    .purpleText {
+      color: var(--purple);
+    }
+
+    .prob-row {
+      display: grid;
+      grid-template-columns: 40px 1fr 90px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
 
     .prob-digit {
       text-align: center;
@@ -108,15 +205,49 @@
       padding: 6px 0;
     }
 
-    .prob-bar { height: 15px; border-radius: 999px; overflow: hidden; background: #081020; border: 1px solid var(--border); }
-    .prob-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #22c55e); }
-    .prob-fill.best { background: linear-gradient(90deg, #fbbf24, #ef4444); }
-    .prob-label { font-size: 12px; color: var(--muted); text-align: right; }
+    .prob-bar {
+      height: 15px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #081020;
+      border: 1px solid var(--border);
+    }
 
-    .small { font-size: 12px; color: var(--muted); line-height: 1.55; }
+    .prob-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #22c55e);
+    }
 
-    .alert-log { max-height: 180px; overflow: auto; font-size: 12px; color: var(--muted); line-height: 1.45; white-space: pre-wrap; }
-    .backtest-results { font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+    .prob-fill.best {
+      background: linear-gradient(90deg, #fbbf24, #ef4444);
+    }
+
+    .prob-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .alert-log {
+      max-height: 180px;
+      overflow: auto;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .backtest-results {
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
 
     .checkbox-row {
       display: flex;
@@ -128,13 +259,39 @@
       background: #081020;
     }
 
-    .checkbox-row input { width: 18px; height: 18px; }
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+    }
 
-    .tick-log-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-    .tick-log-table th, .tick-log-table td { padding: 6px; border-bottom: 1px solid var(--border); text-align: center; }
-    .tick-log-table th { color: var(--muted); font-weight: normal; background: #081020; }
-    .tick-log-table .win { color: var(--green); font-weight: bold; }
-    .tick-log-table .loss { color: var(--red); }
+    .tick-log-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .tick-log-table th,
+    .tick-log-table td {
+      padding: 6px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .tick-log-table th {
+      color: var(--muted);
+      font-weight: normal;
+      background: #081020;
+    }
+
+    .tick-log-table .win {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .tick-log-table .loss {
+      color: var(--red);
+    }
 
     .debug-log {
       margin-top: 8px;
@@ -154,6 +311,7 @@
 
 <body>
   <div class="container">
+
     <h1>Deriv Prediction Lab V3.5 (Polling Live Mode)</h1>
 
     <div class="warning">
@@ -164,6 +322,7 @@
 
     <div class="card">
       <div class="row">
+
         <div>
           <label for="appId">Deriv App ID (NUMERIC only, e.g. 1089)</label>
           <input id="appId" value="1089" />
@@ -187,13 +346,28 @@
 
         <div>
           <label for="historyCount">API History Count</label>
-          <input id="historyCount" type="number" value="1000" min="100" max="5000" step="100" />
+          <input
+            id="historyCount"
+            type="number"
+            value="1000"
+            min="100"
+            max="5000"
+            step="100"
+          />
         </div>
 
         <div>
           <label for="maxHistory">Max Saved Digits</label>
-          <input id="maxHistory" type="number" value="50000" min="1000" max="300000" step="1000" />
+          <input
+            id="maxHistory"
+            type="number"
+            value="50000"
+            min="1000"
+            max="300000"
+            step="1000"
+          />
         </div>
+
       </div>
 
       <div class="row">
@@ -210,77 +384,170 @@
     </div>
 
     <div class="card">
+
       <div class="row-3">
+
         <div>
           <label for="smoothing">Base Smoothing</label>
-          <input id="smoothing" type="number" value="1" min="0.001" step="0.1" />
+          <input
+            id="smoothing"
+            type="number"
+            value="1"
+            min="0.001"
+            step="0.1"
+          />
         </div>
+
         <div>
           <label for="strength2">2-Digit Model Strength</label>
-          <input id="strength2" type="number" value="50" min="1" step="1" />
+          <input
+            id="strength2"
+            type="number"
+            value="50"
+            min="1"
+            step="1"
+          />
         </div>
+
         <div>
           <label for="strength1">1-Digit Fallback Strength</label>
-          <input id="strength1" type="number" value="30" min="1" step="1" />
+          <input
+            id="strength1"
+            type="number"
+            value="30"
+            min="1"
+            step="1"
+          />
         </div>
+
       </div>
 
       <div class="row-2" style="margin-top:10px;">
+
         <div class="checkbox-row">
           <input id="use2" type="checkbox" checked />
           <span class="small">Use 2-digit hybrid model</span>
         </div>
+
         <div class="checkbox-row">
           <input id="soundEnabled" type="checkbox" checked />
           <span class="small">Enable alert sound</span>
         </div>
+
       </div>
     </div>
 
     <div class="card">
+
       <div class="label">Self-Improvement & Memory Settings</div>
+
       <div class="row-3">
+
         <div>
           <label for="modelWindow">Model Memory Window (Ticks)</label>
-          <input id="modelWindow" type="number" value="2000" min="500" max="10000" step="100" />
+          <input
+            id="modelWindow"
+            type="number"
+            value="2000"
+            min="500"
+            max="10000"
+            step="100"
+          />
         </div>
+
         <div>
           <label for="accuracyWindow">Accuracy Tracking Window</label>
-          <input id="accuracyWindow" type="number" value="100" min="20" max="500" step="10" />
+          <input
+            id="accuracyWindow"
+            type="number"
+            value="100"
+            min="20"
+            max="500"
+            step="10"
+          />
         </div>
+
         <div>
           <label for="learningRate">Adaptive Learning Rate</label>
-          <input id="learningRate" type="number" value="0.1" min="0.01" max="1" step="0.01" />
+          <input
+            id="learningRate"
+            type="number"
+            value="0.1"
+            min="0.01"
+            max="1"
+            step="0.01"
+          />
         </div>
+
       </div>
+
       <div class="small" style="margin-top:8px;">
-        The model "forgets" data older than the Memory Window to adapt to new market regimes. It dynamically adjusts weights based on recent accuracy.
+        The model "forgets" data older than the Memory Window to adapt to new market regimes.
+        It dynamically adjusts weights based on recent accuracy.
       </div>
+
     </div>
 
     <div class="card">
+
       <div class="row">
+
         <div>
           <label for="matchesPayout">Matches Payout Multiplier</label>
-          <input id="matchesPayout" type="number" value="9.5" min="1.01" step="0.01" />
+          <input
+            id="matchesPayout"
+            type="number"
+            value="9.5"
+            min="1.01"
+            step="0.01"
+          />
         </div>
+
         <div>
           <label for="differsPayout">Differs Payout Multiplier</label>
-          <input id="differsPayout" type="number" value="1.05" min="1.01" step="0.01" />
+          <input
+            id="differsPayout"
+            type="number"
+            value="1.05"
+            min="1.01"
+            step="0.01"
+          />
         </div>
+
         <div>
           <label for="edgeThreshold">Alert Edge Threshold %</label>
-          <input id="edgeThreshold" type="number" value="0.5" min="0" step="0.1" />
+          <input
+            id="edgeThreshold"
+            type="number"
+            value="0.5"
+            min="0"
+            step="0.1"
+          />
         </div>
+
         <div>
           <label for="alertCooldown">Alert Cooldown Seconds</label>
-          <input id="alertCooldown" type="number" value="30" min="1" step="1" />
+          <input
+            id="alertCooldown"
+            type="number"
+            value="30"
+            min="1"
+            step="1"
+          />
         </div>
+
       </div>
 
       <div class="row-2">
-        <button id="enableAlertsBtn" class="blue">Enable Alerts</button>
-        <button id="testAlertBtn" class="blue">Test Alert</button>
+
+        <button id="enableAlertsBtn" class="blue">
+          Enable Alerts
+        </button>
+
+        <button id="testAlertBtn" class="blue">
+          Test Alert
+        </button>
+
       </div>
 
       <div class="status" id="alertStatus">
@@ -288,40 +555,50 @@
       </div>
 
       <div class="alert-log" id="alertLog"></div>
+
     </div>
 
     <div class="stats">
+
       <div class="stat">
         <div class="label">Next 10-second boundary</div>
         <div class="value greenText" id="countdown">--.--s</div>
       </div>
+
       <div class="stat">
         <div class="label">Last digit</div>
         <div class="value yellowText" id="lastDigit">-</div>
       </div>
+
       <div class="stat">
         <div class="label">Predicted next digit</div>
         <div class="value redText" id="predictedDigit">-</div>
       </div>
+
       <div class="stat">
         <div class="label">Estimated probability</div>
         <div class="value blueText" id="predictedProbability">-</div>
       </div>
+
     </div>
 
     <div class="row-3">
+
       <div class="stat">
         <div class="label">Saved digits</div>
         <div class="value purpleText" id="savedCount">0</div>
       </div>
+
       <div class="stat">
         <div class="label">Live updates</div>
         <div class="value blueText" id="liveUpdates">0</div>
       </div>
+
       <div class="stat">
         <div class="label">Last saved epoch</div>
         <div class="value yellowText" id="lastEpoch">-</div>
       </div>
+
     </div>
 
     <div class="card">
@@ -335,15 +612,25 @@
     </div>
 
     <div class="card">
-      <div class="label">Predicted probabilities for next digit — historical/statistical estimate only</div>
-      <div id="probabilities">
-        <div class="small">Load history and/or start live ticks.</div>
+
+      <div class="label">
+        Predicted probabilities for next digit — historical/statistical estimate only
       </div>
+
+      <div id="probabilities">
+        <div class="small">
+          Load history and/or start live ticks.
+        </div>
+      </div>
+
     </div>
 
     <div class="card">
+
       <div class="label">Recent Tick Predictions (Live Log)</div>
+
       <table class="tick-log-table">
+
         <thead>
           <tr>
             <th>Time</th>
@@ -353,61 +640,109 @@
             <th>Result</th>
           </tr>
         </thead>
+
         <tbody id="tickLogBody">
-          <tr><td colspan="5">Waiting for live ticks...</td></tr>
+          <tr>
+            <td colspan="5">Waiting for live ticks...</td>
+          </tr>
         </tbody>
+
       </table>
+
     </div>
 
     <div class="card">
-      <div class="label">Self-Improvement & Model Health</div>
+
+      <div class="label">
+        Self-Improvement & Model Health
+      </div>
+
       <div class="self-improve-stats" id="selfImproveStats">
         Waiting for data to evaluate model performance...
       </div>
+
     </div>
 
     <div class="card">
-      <div class="label">Diagnostics (raw server messages)</div>
-      <div class="small">If something fails, screenshot this box and send it.</div>
-      <div class="debug-log" id="debugLog">No messages yet.</div>
-    </div>
 
-    <div class="card">
-      <div class="row-2">
-        <div>
-          <label for="trainSize">Backtest Training Size</label>
-          <input id="trainSize" type="number" value="2000" min="100" step="100" />
-        </div>
-        <div>
-          <label for="testLimit">Backtest Test Limit</label>
-          <input id="testLimit" type="number" value="5000" min="100" step="100" />
-        </div>
+      <div class="label">
+        Diagnostics (raw server messages)
       </div>
 
-      <button id="runBacktestBtn" class="purple">Run Backtest On Saved History</button>
+      <div class="small">
+        If something fails, screenshot this box and send it.
+      </div>
+
+      <div class="debug-log" id="debugLog">
+        No messages yet.
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="row-2">
+
+        <div>
+          <label for="trainSize">Backtest Training Size</label>
+          <input
+            id="trainSize"
+            type="number"
+            value="2000"
+            min="100"
+            step="100"
+          />
+        </div>
+
+        <div>
+          <label for="testLimit">Backtest Test Limit</label>
+          <input
+            id="testLimit"
+            type="number"
+            value="5000"
+            min="100"
+            step="100"
+          />
+        </div>
+
+      </div>
+
+      <button id="runBacktestBtn" class="purple">
+        Run Backtest On Saved History
+      </button>
 
       <div class="status">
         Backtest approximates next-tick prediction using saved digit history.
         It may not match exact Deriv contract entry/exit rules.
       </div>
 
-      <div class="backtest-results" id="backtestResults">No backtest yet.</div>
+      <div class="backtest-results" id="backtestResults">
+        No backtest yet.
+      </div>
+
     </div>
 
     <div class="card">
+
       <div class="label">Model explanation</div>
+
       <div class="small">
         Adaptive hybrid digit-transition model. Live data uses a real stream when the server allows it,
-        otherwise automatic polling of the ticks_history endpoint (which your server accepts).
+        otherwise automatic polling of the ticks_history endpoint.
       </div>
+
     </div>
+
   </div>
 
   <script>
+
     const $ = id => document.getElementById(id);
 
     let ws = null;
+
     let pingTimer = null;
+
     let timeOffset = 0;
     let timeSentAt = 0;
 
@@ -416,6 +751,7 @@
 
     let prevLive1 = null;
     let prevLive2 = null;
+
     let liveUpdateCount = 0;
 
     let counts1 = createCounts1();
@@ -426,25 +762,45 @@
     let audioCtx = null;
 
     let pendingPrediction = null;
+
     let tickLog = [];
     let rollingWindow = [];
-    let adaptiveWeights = { p2Penalty: 1.0, smoothingBoost: 0 };
+
+    let adaptiveWeights = {
+      p2Penalty: 1.0,
+      smoothingBoost: 0
+    };
 
     const ENDPOINTS = [
       "wss://ws.derivws.com/websockets/v3",
       "wss://ws.binaryws.com/websockets/v3"
     ];
+
     let endpointIdx = 0;
 
     const CANDIDATE_SYMBOLS = [
-      "R_10", "R_25", "R_50", "R_75", "R_100",
-      "1HZ10V", "1HZ25V", "1HZ50V", "1HZ75V", "1HZ100V",
-      "1HZ10", "1HZ25", "1HZ50", "1HZ75", "1HZ100"
+      "R_10",
+      "R_25",
+      "R_50",
+      "R_75",
+      "R_100",
+      "1HZ10V",
+      "1HZ25V",
+      "1HZ50V",
+      "1HZ75V",
+      "1HZ100V",
+      "1HZ10",
+      "1HZ25",
+      "1HZ50",
+      "1HZ75",
+      "1HZ100"
     ];
 
     let activeSymbols = [];
+
     let sessionMode = null;
     let symbolRetries = 0;
+
     let probing = false;
     let probeIndex = 0;
     let probeCandidate = null;
@@ -453,9 +809,15 @@
 
     let pollTimer = null;
     let pollMode = false;
+
     let pendingSubscribe = false;
 
+    // NEW:
+    // Prevent the application from waiting forever for a subscription.
+    let subscriptionTimeout = null;
+
     let livePipSize = null;
+
     let debugLines = [];
 
     const appIdEl = $("appId");
@@ -494,6 +856,7 @@
     const lastDigitEl = $("lastDigit");
     const predictedDigitEl = $("predictedDigit");
     const predictedProbabilityEl = $("predictedProbability");
+
     const edgeInfoEl = $("edgeInfo");
     const quoteEl = $("quote");
     const probabilitiesEl = $("probabilities");
@@ -504,23 +867,37 @@
     const backtestResultsEl = $("backtestResults");
     const debugLogEl = $("debugLog");
 
+
     loadHistoryBtn.addEventListener("click", loadHistory);
     startLiveBtn.addEventListener("click", startLive);
     stopLiveBtn.addEventListener("click", stopLive);
     clearHistoryBtn.addEventListener("click", clearHistory);
     runBacktestBtn.addEventListener("click", runBacktest);
     enableAlertsBtn.addEventListener("click", enableAlerts);
-    testAlertBtn.addEventListener("click", () => doLocalAlert("Test alert from Deriv Prediction Lab"));
+
+    testAlertBtn.addEventListener(
+      "click",
+      () => doLocalAlert("Test alert from Deriv Prediction Lab")
+    );
+
 
     symbolEl.addEventListener("change", () => {
+
       stopLive();
 
       const s = readSettings();
+
       loadSavedHistory(s.symbol);
+
       rebuildModel(savedDigits, s.modelWindow);
+
       initPrevFromSaved();
 
-      adaptiveWeights = { p2Penalty: 1.0, smoothingBoost: 0 };
+      adaptiveWeights = {
+        p2Penalty: 1.0,
+        smoothingBoost: 0
+      };
+
       rollingWindow = [];
       tickLog = [];
       pendingPrediction = null;
@@ -528,282 +905,916 @@
       renderModelInfo();
       renderPrediction(currentPrediction());
       renderTickLog();
-      renderSelfImproveStats(0, 0, 0, adaptiveWeights);
 
-      setStatus(`Switched to ${s.symbol}. Saved history loaded from browser storage.`);
+      renderSelfImproveStats(
+        0,
+        0,
+        0,
+        adaptiveWeights
+      );
+
+      setStatus(
+        `Switched to ${s.symbol}. Saved history loaded from browser storage.`
+      );
+
     });
+
 
     window.addEventListener("beforeunload", () => {
-      try { persistHistory(); } catch (e) {}
+
+      try {
+        persistHistory();
+      } catch (e) {}
+
     });
+
 
     function setStatus(message) {
       statusEl.textContent = message;
     }
 
+
     function pushDebug(text) {
+
       const time = new Date().toLocaleTimeString();
-      debugLines.unshift(`[${time}] ${text}`);
-      if (debugLines.length > 8) debugLines.pop();
-      debugLogEl.textContent = debugLines.join("\n");
+
+      debugLines.unshift(
+        `[${time}] ${text}`
+      );
+
+      if (debugLines.length > 8) {
+        debugLines.pop();
+      }
+
+      debugLogEl.textContent =
+        debugLines.join("\n");
     }
 
+
     function readSettings() {
+
       return {
-        appId: appIdEl.value.trim() || "1089",
-        symbol: symbolEl.value,
-        historyCount: Math.min(Math.max(Number(historyCountEl.value) || 1000, 100), 5000),
-        maxHistory: Math.min(Math.max(Number(maxHistoryEl.value) || 50000, 1000), 300000),
 
-        smoothing: Math.max(0.001, Number(smoothingEl.value) || 1),
-        strength2: Math.max(1, Number(strength2El.value) || 50),
-        strength1: Math.max(1, Number(strength1El.value) || 30),
-        use2: use2El.checked,
+        appId:
+          appIdEl.value.trim() || "1089",
 
-        matchesPayout: Math.max(1.01, Number(matchesPayoutEl.value) || 9.5),
-        differsPayout: Math.max(1.01, Number(differsPayoutEl.value) || 1.05),
-        edgeThreshold: Math.max(0, Number(edgeThresholdEl.value) || 0) / 100,
-        alertCooldown: Math.max(1, Number(alertCooldownEl.value) || 30),
-        soundEnabled: soundEnabledEl.checked,
+        symbol:
+          symbolEl.value,
 
-        modelWindow: Math.max(500, Number($("modelWindow").value) || 2000),
-        accuracyWindow: Math.max(20, Number($("accuracyWindow").value) || 100),
-        learningRate: Math.max(0.01, Number($("learningRate").value) || 0.1)
+        historyCount:
+          Math.min(
+            Math.max(
+              Number(historyCountEl.value) || 1000,
+              100
+            ),
+            5000
+          ),
+
+        maxHistory:
+          Math.min(
+            Math.max(
+              Number(maxHistoryEl.value) || 50000,
+              1000
+            ),
+            300000
+          ),
+
+        smoothing:
+          Math.max(
+            0.001,
+            Number(smoothingEl.value) || 1
+          ),
+
+        strength2:
+          Math.max(
+            1,
+            Number(strength2El.value) || 50
+          ),
+
+        strength1:
+          Math.max(
+            1,
+            Number(strength1El.value) || 30
+          ),
+
+        use2:
+          use2El.checked,
+
+        matchesPayout:
+          Math.max(
+            1.01,
+            Number(matchesPayoutEl.value) || 9.5
+          ),
+
+        differsPayout:
+          Math.max(
+            1.01,
+            Number(differsPayoutEl.value) || 1.05
+          ),
+
+        edgeThreshold:
+          Math.max(
+            0,
+            Number(edgeThresholdEl.value) || 0
+          ) / 100,
+
+        alertCooldown:
+          Math.max(
+            1,
+            Number(alertCooldownEl.value) || 30
+          ),
+
+        soundEnabled:
+          soundEnabledEl.checked,
+
+        modelWindow:
+          Math.max(
+            500,
+            Number($("modelWindow").value) || 2000
+          ),
+
+        accuracyWindow:
+          Math.max(
+            20,
+            Number($("accuracyWindow").value) || 100
+          ),
+
+        learningRate:
+          Math.max(
+            0.01,
+            Number($("learningRate").value) || 0.1
+          )
+
       };
     }
 
+
     function ensureValidAppId() {
+
       const raw = appIdEl.value.trim();
-      if (/^\d{1,10}$/.test(raw)) return;
 
-      pushDebug("invalid app_id format: " + raw + " -> using 1089");
-      appIdEl.value = "1089";
-      setStatus("App ID must be NUMERIC (1089 or your registered App ID). A Deriv account ID or token does not work here. Reverted to 1089.");
-    }
-
-    // ---------- Symbol helpers (legacy + new API field names) ----------
-    function symCode(a) { return a.symbol || a.underlying_symbol || ""; }
-    function symName(a) { return a.display_name || a.underlying_symbol_name || symCode(a); }
-
-    function isSynthetic(a) {
-      const blob = [
-        a.market, a.submarket, a.subgroup,
-        a.market_display_name, a.submarket_display_name,
-        a.underlying_symbol_type, symName(a), symCode(a)
-      ].join(" ").toLowerCase();
-
-      return blob.includes("synthetic") || blob.includes("derived") || blob.includes("volatility");
-    }
-
-    function rebuildSymbolDropdown() {
-      const synth = activeSymbols.filter(isSynthetic);
-      if (!synth.length) return symbolEl.value;
-
-      synth.sort((a, b) => symName(a).localeCompare(symName(b)));
-
-      const current = symbolEl.value;
-      const currentText = (symbolEl.selectedOptions[0] || {}).textContent || "";
-      let resolved = current;
-
-      if (!synth.some(a => symCode(a) === current)) {
-        const byName = synth.find(a => symName(a).trim() === currentText.trim());
-        resolved = byName ? symCode(byName) : symCode(synth[0]);
-      }
-
-      symbolEl.innerHTML = synth
-        .map(a => `<option value="${symCode(a)}">${symName(a)}</option>`)
-        .join("");
-
-      symbolEl.value = resolved || symCode(synth[0]);
-      return symbolEl.value;
-    }
-
-    function adoptSymbol(code) {
-      if (![...symbolEl.options].some(o => o.value === code)) {
-        const opt = document.createElement("option");
-        opt.value = code;
-        opt.textContent = code + " (auto-found)";
-        symbolEl.appendChild(opt);
-      }
-      symbolEl.value = code;
-
-      const s = readSettings();
-      loadSavedHistory(code);
-      rebuildModel(savedDigits, s.modelWindow);
-      initPrevFromSaved();
-    }
-
-    function requestActiveSymbols(socket, mode) {
-      socket.send(JSON.stringify({ active_symbols: mode || "brief" }));
-    }
-
-    function sendHistoryRequest(socket, sym, count) {
-      socket.send(JSON.stringify({
-        ticks_history: sym,
-        adjust_start_time: 1,
-        count: count,
-        end: "latest",
-        style: "ticks"
-      }));
-    }
-
-    function handleActiveSymbols(data, socket) {
-      const arr = data.active_symbols || data.underlying_symbols || data.symbols || [];
-      activeSymbols = Array.isArray(arr) ? arr : [];
-
-      const synthCount = activeSymbols.filter(isSynthetic).length;
-      pushDebug(`active_symbols: ${activeSymbols.length} entries, ${synthCount} synthetic`);
-
-      if (!activeSymbols.length || !synthCount) {
-        if (!triedFullSymbols) {
-          triedFullSymbols = true;
-          requestActiveSymbols(socket, "full");
-          return;
-        }
-        beginProbe(socket);
+      if (/^\d{1,10}$/.test(raw)) {
         return;
       }
 
-      const sym = rebuildSymbolDropdown();
-      symbolRetries = 0;
+      pushDebug(
+        "invalid app_id format: " +
+        raw +
+        " -> using 1089"
+      );
 
-      if (sessionMode === "history" || sessionMode === "live") {
-        setStatus(`Symbol list synced (${synthCount} synthetic). Using ${sym}.`);
-        sendHistoryRequest(socket, sym, readSettings().historyCount);
-      }
+      appIdEl.value = "1089";
+
+      setStatus(
+        "App ID must be NUMERIC (1089 or your registered App ID). " +
+        "A Deriv account ID or token does not work here. Reverted to 1089."
+      );
+
     }
 
-    // ---------- Probe mode (plain history requests only) ----------
+
+    // ---------- Symbol helpers ----------
+
+    function symCode(a) {
+      return a.symbol ||
+        a.underlying_symbol ||
+        "";
+    }
+
+
+    function symName(a) {
+      return a.display_name ||
+        a.underlying_symbol_name ||
+        symCode(a);
+    }
+
+
+    function isSynthetic(a) {
+
+      const blob = [
+        a.market,
+        a.submarket,
+        a.subgroup,
+        a.market_display_name,
+        a.submarket_display_name,
+        a.underlying_symbol_type,
+        symName(a),
+        symCode(a)
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return (
+        blob.includes("synthetic") ||
+        blob.includes("derived") ||
+        blob.includes("volatility")
+      );
+
+    }
+
+
+    function rebuildSymbolDropdown() {
+
+      const synth =
+        activeSymbols.filter(isSynthetic);
+
+      if (!synth.length) {
+        return symbolEl.value;
+      }
+
+      synth.sort(
+        (a, b) =>
+          symName(a).localeCompare(
+            symName(b)
+          )
+      );
+
+      const current =
+        symbolEl.value;
+
+      const currentText =
+        (symbolEl.selectedOptions[0] || {})
+          .textContent || "";
+
+      let resolved = current;
+
+      if (
+        !synth.some(
+          a => symCode(a) === current
+        )
+      ) {
+
+        const byName =
+          synth.find(
+            a =>
+              symName(a).trim() ===
+              currentText.trim()
+          );
+
+        resolved =
+          byName
+            ? symCode(byName)
+            : symCode(synth[0]);
+
+      }
+
+      symbolEl.innerHTML =
+        synth
+          .map(
+            a =>
+              `<option value="${symCode(a)}">${symName(a)}</option>`
+          )
+          .join("");
+
+      symbolEl.value =
+        resolved ||
+        symCode(synth[0]);
+
+      return symbolEl.value;
+
+    }
+
+
+    function adoptSymbol(code) {
+
+      if (
+        ![...symbolEl.options]
+          .some(o => o.value === code)
+      ) {
+
+        const opt =
+          document.createElement("option");
+
+        opt.value = code;
+        opt.textContent =
+          code + " (auto-found)";
+
+        symbolEl.appendChild(opt);
+      }
+
+      symbolEl.value = code;
+
+      const s = readSettings();
+
+      loadSavedHistory(code);
+
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
+      initPrevFromSaved();
+
+    }
+
+
+    function requestActiveSymbols(
+      socket,
+      mode
+    ) {
+
+      socket.send(
+        JSON.stringify({
+          active_symbols:
+            mode || "brief"
+        })
+      );
+
+    }
+
+
+    function sendHistoryRequest(
+      socket,
+      sym,
+      count
+    ) {
+
+      socket.send(
+        JSON.stringify({
+          ticks_history: sym,
+          adjust_start_time: 1,
+          count: count,
+          end: "latest",
+          style: "ticks"
+        })
+      );
+
+    }
+
+
+    function handleActiveSymbols(
+      data,
+      socket
+    ) {
+
+      const arr =
+        data.active_symbols ||
+        data.underlying_symbols ||
+        data.symbols ||
+        [];
+
+      activeSymbols =
+        Array.isArray(arr)
+          ? arr
+          : [];
+
+      const synthCount =
+        activeSymbols.filter(isSynthetic)
+          .length;
+
+      pushDebug(
+        `active_symbols: ${activeSymbols.length} entries, ${synthCount} synthetic`
+      );
+
+      if (
+        !activeSymbols.length ||
+        !synthCount
+      ) {
+
+        if (!triedFullSymbols) {
+
+          triedFullSymbols = true;
+
+          requestActiveSymbols(
+            socket,
+            "full"
+          );
+
+          return;
+        }
+
+        beginProbe(socket);
+
+        return;
+      }
+
+      const sym =
+        rebuildSymbolDropdown();
+
+      symbolRetries = 0;
+
+      if (
+        sessionMode === "history" ||
+        sessionMode === "live"
+      ) {
+
+        setStatus(
+          `Symbol list synced (${synthCount} synthetic). Using ${sym}.`
+        );
+
+        sendHistoryRequest(
+          socket,
+          sym,
+          readSettings().historyCount
+        );
+
+      }
+
+    }
+
+
+    // ---------- Probe mode ----------
+
     function beginProbe(socket) {
+
       if (probeCycles >= 3) {
+
         probing = false;
-        pushDebug("probe: giving up after 3 cycles");
+
+        pushDebug(
+          "probe: giving up after 3 cycles"
+        );
+
         setStatus(
           "Server rejected all known symbol codes. " +
-          "Try: (1) register a FREE App ID at developers.deriv.com and paste its NUMBER above, " +
-          "(2) switch network (Wi-Fi <-> mobile data). Screenshot Diagnostics if it persists."
+          "Try registering a valid App ID and retry."
         );
+
         return;
       }
 
       probeCycles++;
+
       probing = true;
       probeIndex = 0;
-      setStatus("Symbol list empty — probing known market codes...");
+
+      setStatus(
+        "Symbol list empty — probing known market codes..."
+      );
+
       probeNext(socket);
+
     }
 
+
     function probeNext(socket) {
-      if (probeIndex >= CANDIDATE_SYMBOLS.length) {
+
+      if (
+        probeIndex >=
+        CANDIDATE_SYMBOLS.length
+      ) {
+
         probing = false;
-        pushDebug("probe: all candidates rejected");
+
+        pushDebug(
+          "probe: all candidates rejected"
+        );
+
         setStatus(
           "All known symbol codes were rejected. " +
-          "Register a free App ID at developers.deriv.com or switch network, then retry."
+          "Check the App ID/network and retry."
         );
+
         return;
       }
 
-      probeCandidate = CANDIDATE_SYMBOLS[probeIndex++];
-      setStatus(`Probing market code ${probeCandidate} (${probeIndex}/${CANDIDATE_SYMBOLS.length})...`);
-      sendHistoryRequest(socket, probeCandidate, 500);
+      probeCandidate =
+        CANDIDATE_SYMBOLS[
+          probeIndex++
+        ];
+
+      setStatus(
+        `Probing market code ${probeCandidate} (${probeIndex}/${CANDIDATE_SYMBOLS.length})...`
+      );
+
+      sendHistoryRequest(
+        socket,
+        probeCandidate,
+        500
+      );
+
     }
 
-    function acceptProbe(data, socket) {
-      const cand = probeCandidate;
+
+    function acceptProbe(
+      data,
+      socket
+    ) {
+
+      const cand =
+        probeCandidate;
+
       probing = false;
 
       adoptSymbol(cand);
-      pushDebug(`probe: ACCEPTED ${cand}`);
 
-      processHistory(data, socket);
+      pushDebug(
+        `probe: ACCEPTED ${cand}`
+      );
 
-      if (sessionMode === "live") trySubscribe(socket, cand);
+      processHistory(
+        data,
+        socket
+      );
+
+      if (
+        sessionMode === "live"
+      ) {
+
+        trySubscribe(
+          socket,
+          cand
+        );
+
+      }
+
     }
 
-    // ---------- Stream vs polling ----------
-    function trySubscribe(socket, sym) {
+
+    // ==========================================================
+    // FIXED STREAM / POLLING SECTION
+    // ==========================================================
+
+    function trySubscribe(
+      socket,
+      sym
+    ) {
+
+      if (
+        !socket ||
+        socket.readyState !== WebSocket.OPEN
+      ) {
+
+        pushDebug(
+          "subscribe: socket not open -> polling"
+        );
+
+        startPolling(socket);
+
+        return;
+      }
+
       pendingSubscribe = true;
-      setStatus(`History loaded. Trying real stream for ${sym}...`);
-      socket.send(JSON.stringify({ ticks: sym, subscribe: 1 }));
-    }
 
-    function sendPollRequest(socket) {
-      socket.send(JSON.stringify({
-        ticks_history: symbolEl.value,
-        adjust_start_time: 1,
-        count: 10,
-        end: "latest",
-        style: "ticks"
-      }));
-    }
+      setStatus(
+        `History loaded. Trying real stream for ${sym}...`
+      );
 
-    function startPolling(socket) {
-      if (pollTimer) return;
-
-      pollMode = true;
-      pushDebug("polling mode started (1.2s interval)");
-      setStatus("Server refuses subscriptions — LIVE VIA POLLING (fetching latest ticks every ~1.2s)...");
-
-      sendPollRequest(socket);
-
-      pollTimer = setInterval(() => {
-        if (socket.readyState === WebSocket.OPEN) sendPollRequest(socket);
-      }, 1200);
-    }
-
-    function stopPolling() {
-      if (pollTimer) {
-        clearInterval(pollTimer);
-        pollTimer = null;
-      }
-      pollMode = false;
-    }
-
-    function handlePollHistory(data) {
-      const prices = data?.history?.prices || [];
-      const times = data?.history?.times || [];
-      const pipSize = typeof data.pip_size === "number" ? data.pip_size : livePipSize;
-      if (typeof data.pip_size === "number") livePipSize = data.pip_size;
-
-      for (let i = 0; i < prices.length; i++) {
-        const epoch = Number(times[i] || 0);
-        if (!epoch || epoch <= lastSavedEpoch) continue;
-
-        const digit = digitFromTickValue(prices[i], pipSize);
-        ingestTick(digit, epoch, formatQuote(prices[i], pipSize));
-      }
-    }
-    // --------------------------
-
-    function digitsKey(symbol) { return "deriv_lab_digits_" + symbol; }
-    function epochKey(symbol) { return "deriv_lab_epoch_" + symbol; }
-
-    function loadSavedHistory(symbol) {
-      savedDigits = (localStorage.getItem(digitsKey(symbol)) || "").replace(/[^0-9]/g, "");
-      lastSavedEpoch = Number(localStorage.getItem(epochKey(symbol)) || 0);
-    }
-
-    function persistHistory() {
-      const s = readSettings();
+      pushDebug(
+        `subscribe: requesting tick stream for ${sym}`
+      );
 
       try {
-        savedDigits = savedDigits.slice(-s.maxHistory);
-        localStorage.setItem(digitsKey(s.symbol), savedDigits);
-        localStorage.setItem(epochKey(s.symbol), String(lastSavedEpoch));
+
+        socket.send(
+          JSON.stringify({
+            ticks: sym,
+            subscribe: 1
+          })
+        );
+
       } catch (e) {
-        try {
-          savedDigits = savedDigits.slice(-Math.floor(s.maxHistory / 2));
-          localStorage.setItem(digitsKey(s.symbol), savedDigits);
-          localStorage.setItem(epochKey(s.symbol), String(lastSavedEpoch));
-        } catch (e2) {
-          console.error("Storage error:", e2);
-        }
+
+        pushDebug(
+          "subscribe send failed: " +
+          e.message
+        );
+
+        pendingSubscribe = false;
+
+        startPolling(socket);
+
+        return;
       }
+
+
+      // FIX:
+      // If Deriv accepts the connection but does not
+      // provide a tick, don't wait forever.
+      if (subscriptionTimeout) {
+        clearTimeout(
+          subscriptionTimeout
+        );
+      }
+
+      subscriptionTimeout =
+        setTimeout(() => {
+
+          subscriptionTimeout = null;
+
+          if (
+            pendingSubscribe &&
+            ws === socket &&
+            !pollMode
+          ) {
+
+            pendingSubscribe = false;
+
+            pushDebug(
+              "subscribe timeout -> switching to polling"
+            );
+
+            startPolling(socket);
+
+          }
+
+        }, 5000);
+
     }
 
+
+    function sendPollRequest(socket) {
+
+      if (
+        !socket ||
+        socket.readyState !== WebSocket.OPEN
+      ) {
+        return;
+      }
+
+      try {
+
+        socket.send(
+          JSON.stringify({
+            ticks_history:
+              symbolEl.value,
+
+            adjust_start_time: 1,
+
+            count: 10,
+
+            end: "latest",
+
+            style: "ticks"
+          })
+        );
+
+      } catch (e) {
+
+        pushDebug(
+          "poll request failed: " +
+          e.message
+        );
+
+      }
+
+    }
+
+
+    function startPolling(socket) {
+
+      if (
+        !socket ||
+        socket.readyState !== WebSocket.OPEN
+      ) {
+
+        pushDebug(
+          "polling could not start: socket is not open"
+        );
+
+        return;
+      }
+
+
+      // Prevent duplicate timers.
+      if (pollTimer) {
+
+        clearInterval(
+          pollTimer
+        );
+
+        pollTimer = null;
+
+      }
+
+
+      // Cancel subscription timeout.
+      if (subscriptionTimeout) {
+
+        clearTimeout(
+          subscriptionTimeout
+        );
+
+        subscriptionTimeout = null;
+
+      }
+
+
+      pendingSubscribe = false;
+
+      pollMode = true;
+
+
+      pushDebug(
+        "subscription unavailable -> polling mode started"
+      );
+
+
+      // REQUIRED STATUS MESSAGE.
+      setStatus(
+        "Server refuses subscriptions — LIVE VIA POLLING (fetching latest ticks every ~1.2s)..."
+      );
+
+
+      // Request immediately.
+      sendPollRequest(socket);
+
+
+      // Continue polling every 1.2 seconds.
+      pollTimer =
+        setInterval(() => {
+
+          if (
+            !ws ||
+            ws !== socket
+          ) {
+
+            stopPolling();
+
+            return;
+          }
+
+          if (
+            socket.readyState === WebSocket.OPEN
+          ) {
+
+            sendPollRequest(socket);
+
+          }
+
+        }, 1200);
+
+    }
+
+
+    function stopPolling() {
+
+      if (pollTimer) {
+
+        clearInterval(
+          pollTimer
+        );
+
+        pollTimer = null;
+
+      }
+
+      pollMode = false;
+
+    }
+
+
+    function handlePollHistory(
+      data
+    ) {
+
+      const prices =
+        data?.history?.prices || [];
+
+      const times =
+        data?.history?.times || [];
+
+      const pipSize =
+        typeof data.pip_size === "number"
+          ? data.pip_size
+          : livePipSize;
+
+      if (
+        typeof data.pip_size === "number"
+      ) {
+
+        livePipSize =
+          data.pip_size;
+
+      }
+
+
+      for (
+        let i = 0;
+        i < prices.length;
+        i++
+      ) {
+
+        const epoch =
+          Number(
+            times[i] || 0
+          );
+
+        if (
+          !epoch ||
+          epoch <= lastSavedEpoch
+        ) {
+          continue;
+        }
+
+        const digit =
+          digitFromTickValue(
+            prices[i],
+            pipSize
+          );
+
+        ingestTick(
+          digit,
+          epoch,
+          formatQuote(
+            prices[i],
+            pipSize
+          )
+        );
+
+      }
+
+    }
+
+
+    // ---------- Storage ----------
+
+    function digitsKey(symbol) {
+      return "deriv_lab_digits_" +
+        symbol;
+    }
+
+
+    function epochKey(symbol) {
+      return "deriv_lab_epoch_" +
+        symbol;
+    }
+
+
+    function loadSavedHistory(symbol) {
+
+      savedDigits =
+        (
+          localStorage.getItem(
+            digitsKey(symbol)
+          ) || ""
+        )
+          .replace(
+            /[^0-9]/g,
+            ""
+          );
+
+      lastSavedEpoch =
+        Number(
+          localStorage.getItem(
+            epochKey(symbol)
+          ) || 0
+        );
+
+    }
+
+
+    function persistHistory() {
+
+      const s =
+        readSettings();
+
+      try {
+
+        savedDigits =
+          savedDigits.slice(
+            -s.maxHistory
+          );
+
+        localStorage.setItem(
+          digitsKey(s.symbol),
+          savedDigits
+        );
+
+        localStorage.setItem(
+          epochKey(s.symbol),
+          String(lastSavedEpoch)
+        );
+
+      } catch (e) {
+
+        try {
+
+          savedDigits =
+            savedDigits.slice(
+              -Math.floor(
+                s.maxHistory / 2
+              )
+            );
+
+          localStorage.setItem(
+            digitsKey(s.symbol),
+            savedDigits
+          );
+
+          localStorage.setItem(
+            epochKey(s.symbol),
+            String(lastSavedEpoch)
+          );
+
+        } catch (e2) {
+
+          console.error(
+            "Storage error:",
+            e2
+          );
+
+        }
+
+      }
+
+    }
+
+
     function clearHistory() {
-      const s = readSettings();
+
+      const s =
+        readSettings();
 
       savedDigits = "";
       lastSavedEpoch = 0;
@@ -812,711 +1823,2801 @@
       prevLive1 = null;
       prevLive2 = null;
 
-      adaptiveWeights = { p2Penalty: 1.0, smoothingBoost: 0 };
+      adaptiveWeights = {
+        p2Penalty: 1.0,
+        smoothingBoost: 0
+      };
+
       rollingWindow = [];
       tickLog = [];
       pendingPrediction = null;
 
       persistHistory();
 
-      rebuildModel(savedDigits, s.modelWindow);
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
       renderModelInfo();
-      renderPrediction(currentPrediction());
+
+      renderPrediction(
+        currentPrediction()
+      );
+
       renderTickLog();
-      renderSelfImproveStats(0, 0, 0, adaptiveWeights);
 
-      setStatus(`Saved history cleared for ${s.symbol}.`);
+      renderSelfImproveStats(
+        0,
+        0,
+        0,
+        adaptiveWeights
+      );
+
+      setStatus(
+        `Saved history cleared for ${s.symbol}.`
+      );
+
     }
 
-    function createCounts1() { return Array.from({ length: 10 }, () => Array(10).fill(0)); }
-    function createCounts2() { return Array.from({ length: 100 }, () => Array(10).fill(0)); }
-    function sumRow(row) { return row.reduce((a, b) => a + b, 0); }
 
-    function normalizeRow(row, alpha) {
-      const total = sumRow(row) + (10 * alpha);
-      return row.map(count => (count + alpha) / total);
+    function createCounts1() {
+      return Array.from(
+        { length: 10 },
+        () => Array(10).fill(0)
+      );
     }
+
+
+    function createCounts2() {
+      return Array.from(
+        { length: 100 },
+        () => Array(10).fill(0)
+      );
+    }
+
+
+    function sumRow(row) {
+      return row.reduce(
+        (a, b) => a + b,
+        0
+      );
+    }
+
+
+    function normalizeRow(
+      row,
+      alpha
+    ) {
+
+      const total =
+        sumRow(row) +
+        (10 * alpha);
+
+      return row.map(
+        count =>
+          (count + alpha) /
+          total
+      );
+
+    }
+
 
     function argmax(arr) {
+
       let best = 0;
-      for (let i = 1; i < arr.length; i++) if (arr[i] > arr[best]) best = i;
+
+      for (
+        let i = 1;
+        i < arr.length;
+        i++
+      ) {
+
+        if (
+          arr[i] >
+          arr[best]
+        ) {
+
+          best = i;
+
+        }
+
+      }
+
       return best;
+
     }
+
 
     function argmin(arr) {
+
       let best = 0;
-      for (let i = 1; i < arr.length; i++) if (arr[i] < arr[best]) best = i;
+
+      for (
+        let i = 1;
+        i < arr.length;
+        i++
+      ) {
+
+        if (
+          arr[i] <
+          arr[best]
+        ) {
+
+          best = i;
+
+        }
+
+      }
+
       return best;
+
     }
 
-    function rebuildModel(digitsStr, windowSize = 5000) {
-      counts1 = createCounts1();
-      counts2 = createCounts2();
 
-      const n = digitsStr.length;
-      const start1 = Math.max(1, n - windowSize);
-      const start2 = Math.max(2, n - windowSize);
+    function rebuildModel(
+      digitsStr,
+      windowSize = 5000
+    ) {
 
-      for (let i = start1; i < n; i++) {
-        counts1[Number(digitsStr[i - 1])][Number(digitsStr[i])]++;
+      counts1 =
+        createCounts1();
+
+      counts2 =
+        createCounts2();
+
+      const n =
+        digitsStr.length;
+
+      const start1 =
+        Math.max(
+          1,
+          n - windowSize
+        );
+
+      const start2 =
+        Math.max(
+          2,
+          n - windowSize
+        );
+
+
+      for (
+        let i = start1;
+        i < n;
+        i++
+      ) {
+
+        counts1[
+          Number(
+            digitsStr[i - 1]
+          )
+        ][
+          Number(
+            digitsStr[i]
+          )
+        ]++;
+
       }
 
-      for (let i = start2; i < n; i++) {
-        counts2[Number(digitsStr[i - 2]) * 10 + Number(digitsStr[i - 1])][Number(digitsStr[i])]++;
+
+      for (
+        let i = start2;
+        i < n;
+        i++
+      ) {
+
+        counts2[
+          Number(
+            digitsStr[i - 2]
+          ) * 10 +
+          Number(
+            digitsStr[i - 1]
+          )
+        ][
+          Number(
+            digitsStr[i]
+          )
+        ]++;
+
       }
+
     }
+
 
     function initPrevFromSaved() {
-      const n = savedDigits.length;
-      prevLive1 = n >= 1 ? Number(savedDigits[n - 1]) : null;
-      prevLive2 = n >= 2 ? Number(savedDigits[n - 2]) : null;
+
+      const n =
+        savedDigits.length;
+
+      prevLive1 =
+        n >= 1
+          ? Number(
+              savedDigits[n - 1]
+            )
+          : null;
+
+      prevLive2 =
+        n >= 2
+          ? Number(
+              savedDigits[n - 2]
+            )
+          : null;
+
     }
 
-    function connectWebSocket(handlers) {
+
+    // ==========================================================
+    // FIXED WEBSOCKET CONNECTION
+    // ==========================================================
+
+    function connectWebSocket(
+      handlers
+    ) {
+
       if (ws) {
+
         ws.onopen = null;
         ws.onmessage = null;
         ws.onclose = null;
         ws.onerror = null;
-        try { ws.close(); } catch (e) { console.error(e); }
+
+        try {
+          ws.close();
+        } catch (e) {
+          console.error(e);
+        }
+
       }
+
 
       if (pingTimer) {
-        clearInterval(pingTimer);
+
+        clearInterval(
+          pingTimer
+        );
+
         pingTimer = null;
+
       }
 
+
       stopPolling();
+
+
+      if (subscriptionTimeout) {
+
+        clearTimeout(
+          subscriptionTimeout
+        );
+
+        subscriptionTimeout = null;
+
+      }
+
+
       pendingSubscribe = false;
 
-      const s = readSettings();
-      const url = `${ENDPOINTS[endpointIdx]}?app_id=${encodeURIComponent(s.appId)}`;
-      pushDebug("connect " + url);
 
-      const socket = new WebSocket(url);
+      const s =
+        readSettings();
+
+      const url =
+        `${ENDPOINTS[endpointIdx]}?app_id=${encodeURIComponent(s.appId)}`;
+
+
+      pushDebug(
+        "connect " + url
+      );
+
+
+      let socket;
+
+      try {
+
+        socket =
+          new WebSocket(url);
+
+      } catch (e) {
+
+        pushDebug(
+          "WebSocket constructor failed: " +
+          e.message
+        );
+
+        setStatus(
+          "WebSocket connection could not be created."
+        );
+
+        return;
+
+      }
+
+
       ws = socket;
 
+
       socket.onopen = () => {
-        if (ws !== socket) return;
 
-        pingTimer = setInterval(() => {
-          if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ ping: 1 }));
-          }
-        }, 30000);
-
-        handlers.onOpen(socket);
-      };
-
-      socket.onmessage = (event) => {
-        if (ws !== socket) return;
-
-        let data;
-        try { data = JSON.parse(event.data); } catch (e) { return; }
-
-        if (data.error) {
-          pushDebug(`ERR ${data.error.code || ""}: ${data.error.message}`);
-
-          if (data.error.code === "InvalidSymbol") {
-            if (pendingSubscribe) {
-              pendingSubscribe = false;
-              pushDebug("subscribe rejected -> polling mode");
-              startPolling(socket);
-              return;
-            }
-            if (probing) { probeNext(socket); return; }
-            if (symbolRetries < 2) {
-              symbolRetries++;
-              setStatus(`Symbol rejected — re-syncing list (attempt ${symbolRetries})...`);
-              requestActiveSymbols(socket, "brief");
-              return;
-            }
-          }
-
-          setStatus("API error: " + data.error.message);
+        if (ws !== socket) {
           return;
         }
 
-        handlers.onMessage(data, socket);
+
+        pingTimer =
+          setInterval(() => {
+
+            if (
+              socket.readyState ===
+              WebSocket.OPEN
+            ) {
+
+              try {
+
+                socket.send(
+                  JSON.stringify({
+                    ping: 1
+                  })
+                );
+
+              } catch (e) {}
+
+            }
+
+          }, 30000);
+
+
+        handlers.onOpen(socket);
+
       };
+
+
+      socket.onmessage =
+        (event) => {
+
+          if (ws !== socket) {
+            return;
+          }
+
+
+          let data;
+
+          try {
+
+            data =
+              JSON.parse(
+                event.data
+              );
+
+          } catch (e) {
+
+            pushDebug(
+              "Invalid JSON received from server"
+            );
+
+            return;
+          }
+
+
+          // ====================================================
+          // IMPORTANT FIX:
+          // Any API error received while a subscription is
+          // pending now causes automatic polling fallback.
+          // ====================================================
+
+          if (data.error) {
+
+            const errorCode =
+              data.error.code ||
+              "";
+
+            const errorMessage =
+              data.error.message ||
+              "Unknown API error";
+
+
+            pushDebug(
+              `ERR ${errorCode}: ${errorMessage}`
+            );
+
+
+            if (
+              pendingSubscribe &&
+              !pollMode
+            ) {
+
+              pendingSubscribe =
+                false;
+
+
+              if (subscriptionTimeout) {
+
+                clearTimeout(
+                  subscriptionTimeout
+                );
+
+                subscriptionTimeout =
+                  null;
+
+              }
+
+
+              pushDebug(
+                `subscription rejected (${errorCode}) -> switching to polling`
+              );
+
+
+              startPolling(socket);
+
+              return;
+
+            }
+
+
+            if (
+              errorCode ===
+              "InvalidSymbol"
+            ) {
+
+              if (probing) {
+
+                probeNext(socket);
+
+                return;
+
+              }
+
+
+              if (
+                symbolRetries < 2
+              ) {
+
+                symbolRetries++;
+
+                setStatus(
+                  `Symbol rejected — re-syncing list (attempt ${symbolRetries})...`
+                );
+
+                requestActiveSymbols(
+                  socket,
+                  "brief"
+                );
+
+                return;
+
+              }
+
+            }
+
+
+            setStatus(
+              "API error: " +
+              errorMessage
+            );
+
+            return;
+
+          }
+
+
+          handlers.onMessage(
+            data,
+            socket
+          );
+
+        };
+
 
       socket.onclose = () => {
-        if (ws !== socket) return;
-        if (pingTimer) { clearInterval(pingTimer); pingTimer = null; }
+
+        if (ws !== socket) {
+          return;
+        }
+
+
+        if (pingTimer) {
+
+          clearInterval(
+            pingTimer
+          );
+
+          pingTimer = null;
+
+        }
+
+
         stopPolling();
-        setStatus("Disconnected.");
+
+
+        if (subscriptionTimeout) {
+
+          clearTimeout(
+            subscriptionTimeout
+          );
+
+          subscriptionTimeout =
+            null;
+
+        }
+
+
+        setStatus(
+          "Disconnected."
+        );
+
       };
+
 
       socket.onerror = () => {
-        if (ws !== socket) return;
 
-        if (endpointIdx < ENDPOINTS.length - 1) {
-          endpointIdx++;
-          pushDebug("endpoint failed, falling back");
-          setStatus("Connection failed — trying alternate Deriv endpoint...");
-          connectWebSocket(handlers);
-        } else {
-          setStatus("WebSocket error on all endpoints. Check network / App ID.");
+        if (ws !== socket) {
+          return;
         }
+
+
+        // If the socket fails during subscription,
+        // try the alternate endpoint first.
+        if (
+          endpointIdx <
+          ENDPOINTS.length - 1
+        ) {
+
+          endpointIdx++;
+
+          pushDebug(
+            "endpoint failed, falling back"
+          );
+
+          setStatus(
+            "Connection failed — trying alternate Deriv endpoint..."
+          );
+
+          connectWebSocket(
+            handlers
+          );
+
+        } else {
+
+          // If this was a live session, make the
+          // failure visible instead of silently hanging.
+          setStatus(
+            "WebSocket error on all endpoints. Check network / App ID."
+          );
+
+        }
+
       };
+
     }
 
+
+    // ==========================================================
+    // LOAD HISTORY
+    // ==========================================================
+
     function loadHistory() {
+
       ensureValidAppId();
+
       endpointIdx = 0;
 
       sessionMode = "history";
+
       symbolRetries = 0;
       probing = false;
       probeCycles = 0;
       triedFullSymbols = false;
 
-      setStatus("Connecting and syncing symbol list from Deriv...");
+
+      setStatus(
+        "Connecting and syncing symbol list from Deriv..."
+      );
+
 
       connectWebSocket({
+
         onOpen(socket) {
-          requestActiveSymbols(socket, "brief");
+
+          requestActiveSymbols(
+            socket,
+            "brief"
+          );
+
         },
 
-        onMessage(data, socket) {
-          if (data.msg_type === "active_symbols") {
-            handleActiveSymbols(data, socket);
+
+        onMessage(
+          data,
+          socket
+        ) {
+
+          if (
+            data.msg_type ===
+            "active_symbols"
+          ) {
+
+            handleActiveSymbols(
+              data,
+              socket
+            );
+
             return;
+
           }
 
-          if (data.msg_type === "history") {
-            if (probing) { acceptProbe(data, socket); return; }
-            processHistory(data, socket);
+
+          if (
+            data.msg_type ===
+            "history"
+          ) {
+
+            if (probing) {
+
+              acceptProbe(
+                data,
+                socket
+              );
+
+              return;
+
+            }
+
+            processHistory(
+              data,
+              socket
+            );
+
           }
+
         }
+
       });
+
     }
 
-    function processHistory(data, socket) {
-      const s = readSettings();
 
-      const prices = data?.history?.prices || [];
-      const times = data?.history?.times || [];
-      const pipSize = typeof data.pip_size === "number" ? data.pip_size : livePipSize;
-      if (typeof data.pip_size === "number") livePipSize = data.pip_size;
-
-      if (!prices.length) {
-        setStatus("No history returned.");
-        return;
-      }
-
-      const digits = prices.map(price => digitFromTickValue(price, pipSize));
-
-      savedDigits = digits.join("").slice(-s.maxHistory);
-      lastSavedEpoch = times.length ? Number(times[times.length - 1]) : 0;
-
-      persistHistory();
-
-      rebuildModel(savedDigits, s.modelWindow);
-      initPrevFromSaved();
-
-      renderModelInfo();
-      renderPrediction(currentPrediction());
-
-      if (sessionMode === "live") {
-        setStatus(`History loaded (${savedDigits.length} digits).`);
-      } else {
-        setStatus(`History loaded and saved: ${savedDigits.length} digits for ${symbolEl.value}.`);
-      }
-    }
+    // ==========================================================
+    // START LIVE
+    // ==========================================================
 
     function startLive() {
+
       ensureValidAppId();
+
       endpointIdx = 0;
 
-      const s = readSettings();
+      const s =
+        readSettings();
+
+
       sessionMode = "live";
+
       symbolRetries = 0;
       probing = false;
       probeCycles = 0;
       triedFullSymbols = false;
 
-      loadSavedHistory(s.symbol);
-      rebuildModel(savedDigits, s.modelWindow);
+
+      loadSavedHistory(
+        s.symbol
+      );
+
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
       initPrevFromSaved();
 
-      renderModelInfo();
-      renderPrediction(currentPrediction());
 
-      setStatus(`Connecting live for ${s.symbol}...`);
+      renderModelInfo();
+
+      renderPrediction(
+        currentPrediction()
+      );
+
+
+      setStatus(
+        `Connecting live for ${s.symbol}...`
+      );
+
 
       connectWebSocket({
+
         onOpen(socket) {
-          timeSentAt = Date.now();
-          socket.send(JSON.stringify({ time: 1 }));
-          requestActiveSymbols(socket, "brief");
+
+          timeSentAt =
+            Date.now();
+
+          socket.send(
+            JSON.stringify({
+              time: 1
+            })
+          );
+
+          requestActiveSymbols(
+            socket,
+            "brief"
+          );
+
         },
 
-        onMessage(data, socket) {
-          if (data.msg_type === "time") {
-            const latency = Date.now() - timeSentAt;
-            timeOffset = data.time * 1000 + Math.round(latency / 2) - Date.now();
+
+        onMessage(
+          data,
+          socket
+        ) {
+
+          if (
+            data.msg_type ===
+            "time"
+          ) {
+
+            const latency =
+              Date.now() -
+              timeSentAt;
+
+            timeOffset =
+              data.time * 1000 +
+              Math.round(
+                latency / 2
+              ) -
+              Date.now();
+
           }
 
-          if (data.msg_type === "active_symbols") {
-            handleActiveSymbols(data, socket);
+
+          if (
+            data.msg_type ===
+            "active_symbols"
+          ) {
+
+            handleActiveSymbols(
+              data,
+              socket
+            );
+
             return;
+
           }
 
-          if (data.msg_type === "history") {
-            if (probing) { acceptProbe(data, socket); return; }
-            if (pollMode) { handlePollHistory(data); return; }
-            processHistory(data, socket);
-            trySubscribe(socket, symbolEl.value);
-            return;
-          }
 
-          if (data.msg_type === "tick" && data.tick) {
-            pendingSubscribe = false;
-            if (pollMode) {
-              stopPolling();
-              setStatus(`Live: ${symbolEl.value} | real stream active`);
+          if (
+            data.msg_type ===
+            "history"
+          ) {
+
+            if (probing) {
+
+              acceptProbe(
+                data,
+                socket
+              );
+
+              return;
+
             }
-            symbolRetries = 0;
-            handleLiveTick(data.tick);
+
+
+            // FIX:
+            // History received while polling is processed
+            // by the polling handler rather than reloading
+            // the entire history.
+            if (pollMode) {
+
+              handlePollHistory(
+                data
+              );
+
+              return;
+
+            }
+
+
+            processHistory(
+              data,
+              socket
+            );
+
+
+            // Only attempt streaming when not already polling.
+            if (!pollMode) {
+
+              trySubscribe(
+                socket,
+                symbolEl.value
+              );
+
+            }
+
+            return;
+
           }
+
+
+          if (
+            data.msg_type ===
+            "tick" &&
+            data.tick
+          ) {
+
+            // REAL STREAM WORKED.
+            pendingSubscribe =
+              false;
+
+
+            if (subscriptionTimeout) {
+
+              clearTimeout(
+                subscriptionTimeout
+              );
+
+              subscriptionTimeout =
+                null;
+
+            }
+
+
+            // If a real tick arrives after polling
+            // has started, streaming has recovered.
+            if (pollMode) {
+
+              stopPolling();
+
+              setStatus(
+                `Live: ${symbolEl.value} | real stream active`
+              );
+
+            }
+
+
+            symbolRetries = 0;
+
+            handleLiveTick(
+              data.tick
+            );
+
+            return;
+
+          }
+
         }
+
       });
+
     }
+
+
+    // ==========================================================
+    // STOP LIVE
+    // ==========================================================
 
     function stopLive() {
+
       sessionMode = null;
+
       probing = false;
+
       pendingSubscribe = false;
+
+
       stopPolling();
 
-      if (ws) {
-        try { ws.close(); } catch (e) { console.error(e); }
-        ws = null;
+
+      if (subscriptionTimeout) {
+
+        clearTimeout(
+          subscriptionTimeout
+        );
+
+        subscriptionTimeout =
+          null;
+
       }
+
+
+      if (ws) {
+
+        try {
+
+          ws.close();
+
+        } catch (e) {
+
+          console.error(e);
+
+        }
+
+        ws = null;
+
+      }
+
 
       if (pingTimer) {
-        clearInterval(pingTimer);
+
+        clearInterval(
+          pingTimer
+        );
+
         pingTimer = null;
+
       }
 
-      setStatus("Live stopped.");
+
+      setStatus(
+        "Live stopped."
+      );
+
     }
 
-    function handleLiveTick(tick) {
-      const pipSize = typeof tick.pip_size === "number" ? tick.pip_size : livePipSize;
-      if (typeof tick.pip_size === "number") livePipSize = tick.pip_size;
 
-      const digit = digitFromTickValue(tick.quote, pipSize);
-      ingestTick(digit, tick.epoch, formatQuote(tick.quote, pipSize));
+    function handleLiveTick(
+      tick
+    ) {
+
+      const pipSize =
+        typeof tick.pip_size ===
+        "number"
+          ? tick.pip_size
+          : livePipSize;
+
+
+      if (
+        typeof tick.pip_size ===
+        "number"
+      ) {
+
+        livePipSize =
+          tick.pip_size;
+
+      }
+
+
+      const digit =
+        digitFromTickValue(
+          tick.quote,
+          pipSize
+        );
+
+
+      ingestTick(
+        digit,
+        tick.epoch,
+        formatQuote(
+          tick.quote,
+          pipSize
+        )
+      );
+
     }
 
-    function ingestTick(digit, epoch, quoteText) {
-      const s = readSettings();
 
-      lastDigitEl.textContent = String(digit);
-      if (quoteText) quoteEl.textContent = quoteText;
+    function ingestTick(
+      digit,
+      epoch,
+      quoteText
+    ) {
 
-      if (epoch <= lastSavedEpoch) return;
+      const s =
+        readSettings();
 
-      if (pendingPrediction && pendingPrediction.prev1 !== null) {
-        const wasWin = (digit === pendingPrediction.predictedDigit);
-        const wasP1Win = (digit === pendingPrediction.p1Best);
-        const wasP2Win = (digit === pendingPrediction.p2Best);
+
+      lastDigitEl.textContent =
+        String(digit);
+
+
+      if (quoteText) {
+
+        quoteEl.textContent =
+          quoteText;
+
+      }
+
+
+      if (
+        epoch <=
+        lastSavedEpoch
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        pendingPrediction &&
+        pendingPrediction.prev1 !== null
+      ) {
+
+        const wasWin =
+          digit ===
+          pendingPrediction.predictedDigit;
+
+        const wasP1Win =
+          digit ===
+          pendingPrediction.p1Best;
+
+        const wasP2Win =
+          digit ===
+          pendingPrediction.p2Best;
+
 
         tickLog.unshift({
-          time: pendingPrediction.time,
-          predicted: pendingPrediction.predictedDigit,
-          prob: pendingPrediction.predictedProb,
-          actual: digit,
-          win: wasWin
-        });
-        if (tickLog.length > 20) tickLog.pop();
 
-        rollingWindow.unshift({ p1Win: wasP1Win, p2Win: wasP2Win, blendedWin: wasWin });
-        if (rollingWindow.length > s.accuracyWindow) rollingWindow.pop();
+          time:
+            pendingPrediction.time,
+
+          predicted:
+            pendingPrediction.predictedDigit,
+
+          prob:
+            pendingPrediction.predictedProb,
+
+          actual:
+            digit,
+
+          win:
+            wasWin
+
+        });
+
+
+        if (
+          tickLog.length > 20
+        ) {
+
+          tickLog.pop();
+
+        }
+
+
+        rollingWindow.unshift({
+
+          p1Win:
+            wasP1Win,
+
+          p2Win:
+            wasP2Win,
+
+          blendedWin:
+            wasWin
+
+        });
+
+
+        if (
+          rollingWindow.length >
+          s.accuracyWindow
+        ) {
+
+          rollingWindow.pop();
+
+        }
+
 
         renderTickLog();
+
         adaptModelWeights();
+
       }
 
-      savedDigits += String(digit);
-      if (savedDigits.length > s.maxHistory) savedDigits = savedDigits.slice(-s.maxHistory);
-      lastSavedEpoch = epoch;
 
-      rebuildModel(savedDigits, s.modelWindow);
+      savedDigits +=
+        String(digit);
+
+
+      if (
+        savedDigits.length >
+        s.maxHistory
+      ) {
+
+        savedDigits =
+          savedDigits.slice(
+            -s.maxHistory
+          );
+
+      }
+
+
+      lastSavedEpoch =
+        epoch;
+
+
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
+
       initPrevFromSaved();
 
-      liveUpdateCount++;
-      if (liveUpdateCount % 20 === 0) persistHistory();
 
-      const modelOutput = predictModel(prevLive2, prevLive1, counts1, counts2, s);
-      const probs = modelOutput.blended;
-      const bestDigit = argmax(probs);
+      liveUpdateCount++;
+
+
+      if (
+        liveUpdateCount % 20 === 0
+      ) {
+
+        persistHistory();
+
+      }
+
+
+      const modelOutput =
+        predictModel(
+          prevLive2,
+          prevLive1,
+          counts1,
+          counts2,
+          s
+        );
+
+
+      const probs =
+        modelOutput.blended;
+
+
+      const bestDigit =
+        argmax(probs);
+
 
       pendingPrediction = {
-        prev1: prevLive1,
-        prev2: prevLive2,
-        predictedDigit: bestDigit,
-        predictedProb: probs[bestDigit],
-        p1Best: argmax(modelOutput.p1),
-        p2Best: argmax(modelOutput.p2),
-        weights: modelOutput.weights,
-        time: new Date().toLocaleTimeString()
+
+        prev1:
+          prevLive1,
+
+        prev2:
+          prevLive2,
+
+        predictedDigit:
+          bestDigit,
+
+        predictedProb:
+          probs[bestDigit],
+
+        p1Best:
+          argmax(modelOutput.p1),
+
+        p2Best:
+          argmax(modelOutput.p2),
+
+        weights:
+          modelOutput.weights,
+
+        time:
+          new Date()
+            .toLocaleTimeString()
+
       };
 
+
       renderModelInfo();
-      renderPrediction(probs);
-      checkAlerts(probs, s);
+
+      renderPrediction(
+        probs
+      );
+
+      checkAlerts(
+        probs,
+        s
+      );
+
     }
 
-    function digitFromTickValue(value, pipSize) {
-      const ps = (typeof pipSize === "number" ? pipSize : livePipSize);
+
+    function digitFromTickValue(
+      value,
+      pipSize
+    ) {
+
+      const ps =
+        typeof pipSize ===
+        "number"
+          ? pipSize
+          : livePipSize;
+
+
       let text;
-      if (typeof value === "string") text = value;
-      else {
-        const number = Number(value);
-        if (!isFinite(number)) return 0;
-        text = number.toFixed(typeof ps === "number" ? ps : 2);
+
+
+      if (
+        typeof value ===
+        "string"
+      ) {
+
+        text = value;
+
+      } else {
+
+        const number =
+          Number(value);
+
+
+        if (!isFinite(number)) {
+          return 0;
+        }
+
+
+        text =
+          number.toFixed(
+            typeof ps ===
+            "number"
+              ? ps
+              : 2
+          );
+
       }
-      const digitsOnly = text.replace(/[^0-9]/g, "");
-      if (!digitsOnly) return 0;
-      return Number(digitsOnly[digitsOnly.length - 1]);
+
+
+      const digitsOnly =
+        text.replace(
+          /[^0-9]/g,
+          ""
+        );
+
+
+      if (!digitsOnly) {
+        return 0;
+      }
+
+
+      return Number(
+        digitsOnly[
+          digitsOnly.length - 1
+        ]
+      );
+
     }
 
-    function formatQuote(value, pipSize) {
-      const number = Number(value);
-      if (!isFinite(number)) return String(value);
-      const ps = (typeof pipSize === "number" ? pipSize : livePipSize);
-      return number.toFixed(typeof ps === "number" ? ps : 2);
+
+    function formatQuote(
+      value,
+      pipSize
+    ) {
+
+      const number =
+        Number(value);
+
+
+      if (!isFinite(number)) {
+        return String(value);
+      }
+
+
+      const ps =
+        typeof pipSize ===
+        "number"
+          ? pipSize
+          : livePipSize;
+
+
+      return number.toFixed(
+        typeof ps ===
+        "number"
+          ? ps
+          : 2
+      );
+
     }
+
 
     function currentPrediction() {
-      return predictModel(prevLive2, prevLive1, counts1, counts2, readSettings()).blended;
+
+      return predictModel(
+        prevLive2,
+        prevLive1,
+        counts1,
+        counts2,
+        readSettings()
+      ).blended;
+
     }
 
-    function predictModel(prev2, prev1, c1, c2, settings) {
-      const alpha = settings.smoothing + adaptiveWeights.smoothingBoost;
-      const uniform = Array(10).fill(0.1);
 
-      if (prev1 === null || prev1 === undefined) {
-        return { blended: uniform, p1: uniform, p2: uniform, weights: { w2: 0, w1: 0, w0: 1 } };
+    function predictModel(
+      prev2,
+      prev1,
+      c1,
+      c2,
+      settings
+    ) {
+
+      const alpha =
+        settings.smoothing +
+        adaptiveWeights.smoothingBoost;
+
+
+      const uniform =
+        Array(10).fill(0.1);
+
+
+      if (
+        prev1 === null ||
+        prev1 === undefined
+      ) {
+
+        return {
+
+          blended:
+            uniform,
+
+          p1:
+            uniform,
+
+          p2:
+            uniform,
+
+          weights: {
+            w2: 0,
+            w1: 0,
+            w0: 1
+          }
+
+        };
+
       }
 
-      const p1 = normalizeRow(c1[prev1], alpha);
 
-      if (!settings.use2 || prev2 === null || prev2 === undefined) {
-        return { blended: p1, p1: p1, p2: uniform, weights: { w2: 0, w1: 1, w0: 0 } };
+      const p1 =
+        normalizeRow(
+          c1[prev1],
+          alpha
+        );
+
+
+      if (
+        !settings.use2 ||
+        prev2 === null ||
+        prev2 === undefined
+      ) {
+
+        return {
+
+          blended:
+            p1,
+
+          p1:
+            p1,
+
+          p2:
+            uniform,
+
+          weights: {
+            w2: 0,
+            w1: 1,
+            w0: 0
+          }
+
+        };
+
       }
 
-      const idx = prev2 * 10 + prev1;
-      const row2 = c2[idx];
-      const total2 = sumRow(row2);
-      const total1 = sumRow(c1[prev1]);
-      const p2 = normalizeRow(row2, alpha);
 
-      const adjStrength2 = settings.strength2 * adaptiveWeights.p2Penalty;
-      const w2 = total2 / (total2 + adjStrength2);
-      const rawW1 = total1 / (total1 + settings.strength1);
-      const w1 = (1 - w2) * rawW1;
-      const w0 = Math.max(0, 1 - w2 - w1);
+      const idx =
+        prev2 * 10 +
+        prev1;
 
-      const blended = p2.map((v, i) => (v * w2) + (p1[i] * w1) + (uniform[i] * w0));
-      return { blended, p1, p2, weights: { w2, w1, w0 } };
+
+      const row2 =
+        c2[idx];
+
+
+      const total2 =
+        sumRow(row2);
+
+
+      const total1 =
+        sumRow(c1[prev1]);
+
+
+      const p2 =
+        normalizeRow(
+          row2,
+          alpha
+        );
+
+
+      const adjStrength2 =
+        settings.strength2 *
+        adaptiveWeights.p2Penalty;
+
+
+      const w2 =
+        total2 /
+        (
+          total2 +
+          adjStrength2
+        );
+
+
+      const rawW1 =
+        total1 /
+        (
+          total1 +
+          settings.strength1
+        );
+
+
+      const w1 =
+        (1 - w2) *
+        rawW1;
+
+
+      const w0 =
+        Math.max(
+          0,
+          1 - w2 - w1
+        );
+
+
+      const blended =
+        p2.map(
+          (v, i) =>
+            (v * w2) +
+            (p1[i] * w1) +
+            (uniform[i] * w0)
+        );
+
+
+      return {
+
+        blended,
+        p1,
+        p2,
+
+        weights: {
+          w2,
+          w1,
+          w0
+        }
+
+      };
+
     }
+
 
     function renderModelInfo() {
-      savedCountEl.textContent = String(savedDigits.length);
-      liveUpdatesEl.textContent = String(liveUpdateCount);
-      lastEpochEl.textContent = lastSavedEpoch ? new Date(lastSavedEpoch * 1000).toLocaleTimeString() : "-";
+
+      savedCountEl.textContent =
+        String(
+          savedDigits.length
+        );
+
+      liveUpdatesEl.textContent =
+        String(
+          liveUpdateCount
+        );
+
+      lastEpochEl.textContent =
+        lastSavedEpoch
+          ? new Date(
+              lastSavedEpoch * 1000
+            ).toLocaleTimeString()
+          : "-";
+
     }
 
-    function renderPrediction(probs) {
-      if (prevLive1 === null || prevLive1 === undefined) {
-        predictedDigitEl.textContent = "-";
-        predictedProbabilityEl.textContent = "-";
-        edgeInfoEl.textContent = "Waiting for at least one tick.";
-        probabilitiesEl.innerHTML = '<div class="small">Waiting for data.</div>';
+
+    function renderPrediction(
+      probs
+    ) {
+
+      if (
+        prevLive1 === null ||
+        prevLive1 === undefined
+      ) {
+
+        predictedDigitEl.textContent =
+          "-";
+
+        predictedProbabilityEl.textContent =
+          "-";
+
+        edgeInfoEl.textContent =
+          "Waiting for at least one tick.";
+
+        probabilitiesEl.innerHTML =
+          '<div class="small">Waiting for data.</div>';
+
         return;
+
       }
 
-      const s = readSettings();
-      const bestDigit = argmax(probs);
-      const avoidDigit = argmin(probs);
-      const bestProb = probs[bestDigit];
-      const differsWinProb = 1 - probs[avoidDigit];
 
-      const breakEvenMatches = 1 / s.matchesPayout;
-      const breakEvenDiffers = 1 / s.differsPayout;
-      const matchesEdge = (bestProb - breakEvenMatches) * 100;
-      const differsEdge = (differsWinProb - breakEvenDiffers) * 100;
+      const s =
+        readSettings();
 
-      predictedDigitEl.textContent = String(bestDigit);
-      predictedProbabilityEl.textContent = (bestProb * 100).toFixed(2) + "%";
+
+      const bestDigit =
+        argmax(probs);
+
+
+      const avoidDigit =
+        argmin(probs);
+
+
+      const bestProb =
+        probs[bestDigit];
+
+
+      const differsWinProb =
+        1 - probs[avoidDigit];
+
+
+      const breakEvenMatches =
+        1 /
+        s.matchesPayout;
+
+
+      const breakEvenDiffers =
+        1 /
+        s.differsPayout;
+
+
+      const matchesEdge =
+        (
+          bestProb -
+          breakEvenMatches
+        ) * 100;
+
+
+      const differsEdge =
+        (
+          differsWinProb -
+          breakEvenDiffers
+        ) * 100;
+
+
+      predictedDigitEl.textContent =
+        String(bestDigit);
+
+
+      predictedProbabilityEl.textContent =
+        (
+          bestProb * 100
+        ).toFixed(2) +
+        "%";
+
 
       edgeInfoEl.innerHTML =
-        `Matches best digit: <b>${bestDigit}</b> | Estimated prob: <b>${(bestProb * 100).toFixed(2)}%</b> | ` +
+
+        `Matches best digit: <b>${bestDigit}</b> | ` +
+        `Estimated prob: <b>${(bestProb * 100).toFixed(2)}%</b> | ` +
         `Break-even: <b>${(breakEvenMatches * 100).toFixed(2)}%</b> | ` +
         `Edge: <b class="${matchesEdge >= 0 ? "greenText" : "redText"}">${matchesEdge.toFixed(2)}%</b><br>` +
-        `Differs avoid digit: <b>${avoidDigit}</b> | Estimated win prob: <b>${(differsWinProb * 100).toFixed(2)}%</b> | ` +
+
+        `Differs avoid digit: <b>${avoidDigit}</b> | ` +
+        `Estimated win prob: <b>${(differsWinProb * 100).toFixed(2)}%</b> | ` +
         `Break-even: <b>${(breakEvenDiffers * 100).toFixed(2)}%</b> | ` +
         `Edge: <b class="${differsEdge >= 0 ? "greenText" : "redText"}">${differsEdge.toFixed(2)}%</b>`;
 
-      probabilitiesEl.innerHTML = probs.map((probability, digit) => {
-        const percent = (probability * 100).toFixed(2);
-        return `
-          <div class="prob-row">
-            <div class="prob-digit">${digit}</div>
-            <div class="prob-bar"><div class="prob-fill ${digit === bestDigit ? "best" : ""}" style="width:${percent}%"></div></div>
-            <div class="prob-label">${percent}%</div>
-          </div>`;
-      }).join("");
+
+      probabilitiesEl.innerHTML =
+        probs
+          .map(
+            (probability, digit) => {
+
+              const percent =
+                (
+                  probability * 100
+                ).toFixed(2);
+
+              return `
+
+                <div class="prob-row">
+
+                  <div class="prob-digit">
+                    ${digit}
+                  </div>
+
+                  <div class="prob-bar">
+                    <div
+                      class="prob-fill ${digit === bestDigit ? "best" : ""}"
+                      style="width:${percent}%">
+                    </div>
+                  </div>
+
+                  <div class="prob-label">
+                    ${percent}%
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("");
+
     }
+
 
     function renderTickLog() {
-      const tbody = document.getElementById('tickLogBody');
+
+      const tbody =
+        document.getElementById(
+          "tickLogBody"
+        );
+
+
       if (!tickLog.length) {
-        tbody.innerHTML = '<tr><td colspan="5">Waiting for live ticks...</td></tr>';
+
+        tbody.innerHTML =
+          '<tr><td colspan="5">Waiting for live ticks...</td></tr>';
+
         return;
+
       }
-      tbody.innerHTML = tickLog.map(t => `
-        <tr>
-          <td>${t.time}</td>
-          <td class="${t.win ? 'win' : ''}">${t.predicted}</td>
-          <td>${(t.prob * 100).toFixed(1)}%</td>
-          <td class="${t.win ? 'win' : 'loss'}">${t.actual}</td>
-          <td class="${t.win ? 'win' : 'loss'}">${t.win ? 'WIN' : 'LOSS'}</td>
-        </tr>`).join('');
+
+
+      tbody.innerHTML =
+        tickLog
+          .map(
+            t => `
+
+              <tr>
+
+                <td>
+                  ${t.time}
+                </td>
+
+                <td class="${t.win ? "win" : ""}">
+                  ${t.predicted}
+                </td>
+
+                <td>
+                  ${(t.prob * 100).toFixed(1)}%
+                </td>
+
+                <td class="${t.win ? "win" : "loss"}">
+                  ${t.actual}
+                </td>
+
+                <td class="${t.win ? "win" : "loss"}">
+                  ${t.win ? "WIN" : "LOSS"}
+                </td>
+
+              </tr>
+
+            `
+          )
+          .join("");
+
     }
+
 
     function adaptModelWeights() {
-      const s = readSettings();
-      const lr = s.learningRate;
 
-      if (rollingWindow.length < 20) {
-        adaptiveWeights.p2Penalty = 1.0;
-        adaptiveWeights.smoothingBoost = 0;
-        renderSelfImproveStats(0, 0, 0, adaptiveWeights);
+      const s =
+        readSettings();
+
+      const lr =
+        s.learningRate;
+
+
+      if (
+        rollingWindow.length < 20
+      ) {
+
+        adaptiveWeights.p2Penalty =
+          1.0;
+
+        adaptiveWeights.smoothingBoost =
+          0;
+
+        renderSelfImproveStats(
+          0,
+          0,
+          0,
+          adaptiveWeights
+        );
+
+        return;
+
+      }
+
+
+      let p1Wins = 0;
+      let p2Wins = 0;
+      let blendedWins = 0;
+
+
+      rollingWindow.forEach(
+        r => {
+
+          if (r.p1Win) {
+            p1Wins++;
+          }
+
+          if (r.p2Win) {
+            p2Wins++;
+          }
+
+          if (r.blendedWin) {
+            blendedWins++;
+          }
+
+        }
+      );
+
+
+      const total =
+        rollingWindow.length;
+
+
+      const p1Acc =
+        p1Wins / total;
+
+      const p2Acc =
+        p2Wins / total;
+
+      const blendedAcc =
+        blendedWins / total;
+
+
+      if (
+        p2Acc <
+        p1Acc - 0.03
+      ) {
+
+        adaptiveWeights.p2Penalty =
+          Math.min(
+            5.0,
+            adaptiveWeights.p2Penalty +
+            lr
+          );
+
+      } else if (
+        p2Acc >
+        p1Acc + 0.03
+      ) {
+
+        adaptiveWeights.p2Penalty =
+          Math.max(
+            0.1,
+            adaptiveWeights.p2Penalty -
+            lr
+          );
+
+      }
+
+
+      if (
+        blendedAcc < 0.11
+      ) {
+
+        adaptiveWeights.smoothingBoost =
+          Math.min(
+            5.0,
+            adaptiveWeights.smoothingBoost +
+            lr
+          );
+
+      } else {
+
+        adaptiveWeights.smoothingBoost =
+          Math.max(
+            0,
+            adaptiveWeights.smoothingBoost -
+            lr
+          );
+
+      }
+
+
+      renderSelfImproveStats(
+        p1Acc,
+        p2Acc,
+        blendedAcc,
+        adaptiveWeights
+      );
+
+    }
+
+
+    function renderSelfImproveStats(
+      p1Acc,
+      p2Acc,
+      blendedAcc,
+      weights
+    ) {
+
+      const el =
+        document.getElementById(
+          "selfImproveStats"
+        );
+
+
+      if (!el) {
         return;
       }
 
-      let p1Wins = 0, p2Wins = 0, blendedWins = 0;
-      rollingWindow.forEach(r => {
-        if (r.p1Win) p1Wins++;
-        if (r.p2Win) p2Wins++;
-        if (r.blendedWin) blendedWins++;
-      });
 
-      const total = rollingWindow.length;
-      const p1Acc = p1Wins / total;
-      const p2Acc = p2Wins / total;
-      const blendedAcc = blendedWins / total;
+      const format =
+        v =>
+          (
+            v * 100
+          ).toFixed(1) +
+          "%";
 
-      if (p2Acc < p1Acc - 0.03) adaptiveWeights.p2Penalty = Math.min(5.0, adaptiveWeights.p2Penalty + lr);
-      else if (p2Acc > p1Acc + 0.03) adaptiveWeights.p2Penalty = Math.max(0.1, adaptiveWeights.p2Penalty - lr);
 
-      if (blendedAcc < 0.11) adaptiveWeights.smoothingBoost = Math.min(5.0, adaptiveWeights.smoothingBoost + lr);
-      else adaptiveWeights.smoothingBoost = Math.max(0, adaptiveWeights.smoothingBoost - lr);
+      let regime =
+        "Normal (Patterned)";
 
-      renderSelfImproveStats(p1Acc, p2Acc, blendedAcc, adaptiveWeights);
-    }
 
-    function renderSelfImproveStats(p1Acc, p2Acc, blendedAcc, weights) {
-      const el = document.getElementById('selfImproveStats');
-      if (!el) return;
+      let regimeClass =
+        "greenText";
 
-      const format = v => (v * 100).toFixed(1) + '%';
-      let regime = "Normal (Patterned)";
-      let regimeClass = "greenText";
-      if (weights.smoothingBoost > 1.0) {
-        regime = "High Randomness (Conservative Mode)";
-        regimeClass = "yellowText";
+
+      if (
+        weights.smoothingBoost >
+        1.0
+      ) {
+
+        regime =
+          "High Randomness (Conservative Mode)";
+
+        regimeClass =
+          "yellowText";
+
       }
+
 
       el.innerHTML = `
-        <div class="row-3" style="margin-bottom:10px;">
-          <div class="stat"><div class="label">1-Digit Model Acc.</div><div class="value blueText">${p1Acc > 0 ? format(p1Acc) : '-'}</div></div>
-          <div class="stat"><div class="label">2-Digit Model Acc.</div><div class="value purpleText">${p2Acc > 0 ? format(p2Acc) : '-'}</div></div>
-          <div class="stat"><div class="label">Blended Acc.</div><div class="value greenText">${blendedAcc > 0 ? format(blendedAcc) : '-'}</div></div>
+
+        <div
+          class="row-3"
+          style="margin-bottom:10px;"
+        >
+
+          <div class="stat">
+
+            <div class="label">
+              1-Digit Model Acc.
+            </div>
+
+            <div class="value blueText">
+              ${p1Acc > 0 ? format(p1Acc) : "-"}
+            </div>
+
+          </div>
+
+          <div class="stat">
+
+            <div class="label">
+              2-Digit Model Acc.
+            </div>
+
+            <div class="value purpleText">
+              ${p2Acc > 0 ? format(p2Acc) : "-"}
+            </div>
+
+          </div>
+
+          <div class="stat">
+
+            <div class="label">
+              Blended Acc.
+            </div>
+
+            <div class="value greenText">
+              ${blendedAcc > 0 ? format(blendedAcc) : "-"}
+            </div>
+
+          </div>
+
         </div>
+
         <div class="small">
-          <b>Market Regime:</b> <span class="${regimeClass}">${regime}</span> (Smoothing Boost: +${weights.smoothingBoost.toFixed(2)})<br>
-          <b>2-Digit Confidence:</b> Penalty multiplier is <b>${weights.p2Penalty.toFixed(2)}x</b>. ${weights.p2Penalty > 1.5 ? '(Relying less on 2-digit patterns)' : '(Trusting 2-digit patterns)'}
-        </div>`;
+
+          <b>Market Regime:</b>
+
+          <span class="${regimeClass}">
+            ${regime}
+          </span>
+
+          (Smoothing Boost:
+          +${weights.smoothingBoost.toFixed(2)})
+
+          <br>
+
+          <b>2-Digit Confidence:</b>
+
+          Penalty multiplier is
+          <b>${weights.p2Penalty.toFixed(2)}x</b>.
+
+          ${
+            weights.p2Penalty > 1.5
+              ? "(Relying less on 2-digit patterns)"
+              : "(Trusting 2-digit patterns)"
+          }
+
+        </div>
+
+      `;
+
     }
+
 
     async function enableAlerts() {
-      if (!("Notification" in window)) {
+
+      if (
+        !("Notification" in window)
+      ) {
+
         alertsEnabled = true;
-        alertStatusEl.textContent = "Browser notifications are not supported, but in-page alerts are enabled.";
+
+        alertStatusEl.textContent =
+          "Browser notifications are not supported, but in-page alerts are enabled.";
+
         return;
+
       }
-      const permission = await Notification.requestPermission();
+
+
+      const permission =
+        await Notification.requestPermission();
+
+
       alertsEnabled = true;
-      alertStatusEl.textContent = permission === "granted"
-        ? "Browser notifications enabled. Alerts will appear when edge conditions are met."
-        : "Notification permission was not granted. In-page alerts are still enabled.";
+
+
+      alertStatusEl.textContent =
+        permission === "granted"
+          ? "Browser notifications enabled. Alerts will appear when edge conditions are met."
+          : "Notification permission was not granted. In-page alerts are still enabled.";
+
     }
 
-    function checkAlerts(probs, settings) {
-      if (!alertsEnabled) return;
-      if (prevLive1 === null || prevLive1 === undefined) return;
 
-      const now = Date.now();
-      if (now - lastAlertAt < settings.alertCooldown * 1000) return;
+    function checkAlerts(
+      probs,
+      settings
+    ) {
 
-      const bestDigit = argmax(probs);
-      const avoidDigit = argmin(probs);
-      const bestProb = probs[bestDigit];
-      const differsWinProb = 1 - probs[avoidDigit];
+      if (!alertsEnabled) {
+        return;
+      }
 
-      const breakEvenMatches = 1 / settings.matchesPayout;
-      const breakEvenDiffers = 1 / settings.differsPayout;
+
+      if (
+        prevLive1 === null ||
+        prevLive1 === undefined
+      ) {
+
+        return;
+
+      }
+
+
+      const now =
+        Date.now();
+
+
+      if (
+        now - lastAlertAt <
+        settings.alertCooldown *
+        1000
+      ) {
+
+        return;
+
+      }
+
+
+      const bestDigit =
+        argmax(probs);
+
+
+      const avoidDigit =
+        argmin(probs);
+
+
+      const bestProb =
+        probs[bestDigit];
+
+
+      const differsWinProb =
+        1 - probs[avoidDigit];
+
+
+      const breakEvenMatches =
+        1 /
+        settings.matchesPayout;
+
+
+      const breakEvenDiffers =
+        1 /
+        settings.differsPayout;
+
 
       const messages = [];
-      if (bestProb > breakEvenMatches + settings.edgeThreshold) {
-        messages.push(`Matches research signal: digit ${bestDigit} estimated ${(bestProb * 100).toFixed(2)}% vs break-even ${(breakEvenMatches * 100).toFixed(2)}%`);
+
+
+      if (
+        bestProb >
+        breakEvenMatches +
+        settings.edgeThreshold
+      ) {
+
+        messages.push(
+          `Matches research signal: digit ${bestDigit} estimated ${(bestProb * 100).toFixed(2)}% vs break-even ${(breakEvenMatches * 100).toFixed(2)}%`
+        );
+
       }
-      if (differsWinProb > breakEvenDiffers + settings.edgeThreshold) {
-        messages.push(`Differs research signal: avoid digit ${avoidDigit}, estimated win ${(differsWinProb * 100).toFixed(2)}% vs break-even ${(breakEvenDiffers * 100).toFixed(2)}%`);
+
+
+      if (
+        differsWinProb >
+        breakEvenDiffers +
+        settings.edgeThreshold
+      ) {
+
+        messages.push(
+          `Differs research signal: avoid digit ${avoidDigit}, estimated win ${(differsWinProb * 100).toFixed(2)}% vs break-even ${(breakEvenDiffers * 100).toFixed(2)}%`
+        );
+
       }
-      if (!messages.length) return;
 
-      lastAlertAt = now;
-      const alertText = messages.join("\n");
-      addAlertLog(alertText);
-      if (settings.soundEnabled) beep();
 
-      if ("Notification" in window && Notification.permission === "granted") {
-        try { new Notification("Deriv research alert", { body: alertText }); } catch (e) { console.error(e); }
-      }
-    }
-
-    function doLocalAlert(text) {
-      addAlertLog(text);
-      const s = readSettings();
-      if (s.soundEnabled) beep();
-      if ("Notification" in window && Notification.permission === "granted") {
-        try { new Notification("Deriv research alert", { body: text }); } catch (e) { console.error(e); }
-      }
-    }
-
-    function addAlertLog(text) {
-      const time = new Date().toLocaleTimeString();
-      alertLogEl.innerHTML = `<div>[${time}] ${text.replace(/\n/g, "<br>")}</div>` + alertLogEl.innerHTML;
-    }
-
-    function beep() {
-      try {
-        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        oscillator.connect(gain);
-        gain.connect(audioCtx.destination);
-        oscillator.frequency.value = 880;
-        gain.gain.value = 0.05;
-        oscillator.start();
-        setTimeout(() => oscillator.stop(), 280);
-      } catch (e) { console.error(e); }
-    }
-
-    function runBacktest() {
-      const s = readSettings();
-      if (!savedDigits) loadSavedHistory(s.symbol);
-
-      const digits = savedDigits.split("").map(Number);
-      if (digits.length < 300) {
-        backtestResultsEl.textContent = "Not enough saved history. Load more history or keep live running to collect more digits.";
+      if (!messages.length) {
         return;
       }
 
-      const trainInput = Math.max(100, Number(trainSizeEl.value) || 2000);
-      const testInput = Math.max(100, Number(testLimitEl.value) || 5000);
-      const trainSize = Math.min(trainInput, digits.length - 100);
-      const end = Math.min(digits.length - 1, trainSize + testInput);
 
-      const local1 = createCounts1();
-      const local2 = createCounts2();
+      lastAlertAt =
+        now;
 
-      for (let i = 1; i < trainSize; i++) local1[digits[i - 1]][digits[i]]++;
-      for (let i = 2; i < trainSize; i++) local2[digits[i - 2] * 10 + digits[i - 1]][digits[i]]++;
 
-      const matches = { signals: 0, wins: 0, profit: 0, equity: 0, peak: 0, maxDD: 0 };
-      const differs = { signals: 0, wins: 0, profit: 0, equity: 0, peak: 0, maxDD: 0 };
+      const alertText =
+        messages.join("\n");
 
-      for (let i = trainSize; i < end; i++) {
-        const prev1 = digits[i];
-        const prev2 = i > 0 ? digits[i - 1] : null;
-        const actual = digits[i + 1];
 
-        const probs = predictModel(prev2, prev1, local1, local2, s).blended;
-        const bestDigit = argmax(probs);
+      addAlertLog(
+        alertText
+      );
 
-        if (probs[bestDigit] > (1 / s.matchesPayout) + s.edgeThreshold) {
-          updateTradeStats(matches, actual === bestDigit, s.matchesPayout);
-        }
 
-        const avoidDigit = argmin(probs);
-        if ((1 - probs[avoidDigit]) > (1 / s.differsPayout) + s.edgeThreshold) {
-          updateTradeStats(differs, actual !== avoidDigit, s.differsPayout);
-        }
+      if (
+        settings.soundEnabled
+      ) {
 
-        local1[prev1][actual]++;
-        if (prev2 !== null) local2[prev2 * 10 + prev1][actual]++;
+        beep();
+
       }
 
-      renderBacktestResults(end - trainSize, matches, differs, s);
+
+      if (
+        "Notification" in window &&
+        Notification.permission ===
+        "granted"
+      ) {
+
+        try {
+
+          new Notification(
+            "Deriv research alert",
+            {
+              body: alertText
+            }
+          );
+
+        } catch (e) {
+
+          console.error(e);
+
+        }
+
+      }
+
     }
 
-    function updateTradeStats(stats, win, payout) {
-      stats.signals++;
-      if (win) { stats.wins++; stats.profit += payout - 1; stats.equity += payout - 1; }
-      else { stats.profit -= 1; stats.equity -= 1; }
-      if (stats.equity > stats.peak) stats.peak = stats.equity;
-      const drawdown = stats.peak - stats.equity;
-      if (drawdown > stats.maxDD) stats.maxDD = drawdown;
+
+    function doLocalAlert(
+      text
+    ) {
+
+      addAlertLog(text);
+
+      const s =
+        readSettings();
+
+
+      if (
+        s.soundEnabled
+      ) {
+
+        beep();
+
+      }
+
+
+      if (
+        "Notification" in window &&
+        Notification.permission ===
+        "granted"
+      ) {
+
+        try {
+
+          new Notification(
+            "Deriv research alert",
+            {
+              body: text
+            }
+          );
+
+        } catch (e) {
+
+          console.error(e);
+
+        }
+
+      }
+
     }
 
-    function renderBacktestResults(testedTicks, matches, differs, settings) {
-      const formatStats = (label, stats, breakEven) => {
-        const winRate = stats.signals ? ((stats.wins / stats.signals) * 100).toFixed(2) + "%" : "-";
-        return `${label}\nSignals: ${stats.signals}\nWins: ${stats.wins}\nWin rate: ${winRate}\nBreak-even required: ${breakEven}\nProfit units: ${stats.profit.toFixed(2)}\nMax drawdown units: ${stats.maxDD.toFixed(2)}\n`;
+
+    function addAlertLog(
+      text
+    ) {
+
+      const time =
+        new Date()
+          .toLocaleTimeString();
+
+
+      alertLogEl.innerHTML =
+        `<div>[${time}] ${text.replace(/\n/g, "<br>")}</div>` +
+        alertLogEl.innerHTML;
+
+    }
+
+
+    function beep() {
+
+      try {
+
+        audioCtx =
+          audioCtx ||
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+
+        const oscillator =
+          audioCtx.createOscillator();
+
+
+        const gain =
+          audioCtx.createGain();
+
+
+        oscillator.connect(gain);
+
+        gain.connect(
+          audioCtx.destination
+        );
+
+
+        oscillator.frequency.value =
+          880;
+
+
+        gain.gain.value =
+          0.05;
+
+
+        oscillator.start();
+
+
+        setTimeout(
+          () =>
+            oscillator.stop(),
+          280
+        );
+
+      } catch (e) {
+
+        console.error(e);
+
+      }
+
+    }
+
+
+    // ==========================================================
+    // HISTORY PROCESSING
+    // ==========================================================
+
+    function processHistory(
+      data,
+      socket
+    ) {
+
+      const s =
+        readSettings();
+
+
+      const prices =
+        data?.history?.prices || [];
+
+
+      const times =
+        data?.history?.times || [];
+
+
+      const pipSize =
+        typeof data.pip_size ===
+        "number"
+          ? data.pip_size
+          : livePipSize;
+
+
+      if (
+        typeof data.pip_size ===
+        "number"
+      ) {
+
+        livePipSize =
+          data.pip_size;
+
+      }
+
+
+      if (!prices.length) {
+
+        setStatus(
+          "No history returned."
+        );
+
+        return;
+
+      }
+
+
+      const digits =
+        prices.map(
+          price =>
+            digitFromTickValue(
+              price,
+              pipSize
+            )
+        );
+
+
+      savedDigits =
+        digits
+          .join("")
+          .slice(
+            -s.maxHistory
+          );
+
+
+      lastSavedEpoch =
+        times.length
+          ? Number(
+              times[
+                times.length - 1
+              ]
+            )
+          : 0;
+
+
+      persistHistory();
+
+
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
+
+      initPrevFromSaved();
+
+
+      renderModelInfo();
+
+      renderPrediction(
+        currentPrediction()
+      );
+
+
+      if (
+        sessionMode === "live"
+      ) {
+
+        setStatus(
+          `History loaded (${savedDigits.length} digits).`
+        );
+
+      } else {
+
+        setStatus(
+          `History loaded and saved: ${savedDigits.length} digits for ${symbolEl.value}.`
+        );
+
+      }
+
+    }
+
+
+    // ==========================================================
+    // BACKTEST
+    // ==========================================================
+
+    function runBacktest() {
+
+      const s =
+        readSettings();
+
+
+      if (!savedDigits) {
+
+        loadSavedHistory(
+          s.symbol
+        );
+
+      }
+
+
+      const digits =
+        savedDigits
+          .split("")
+          .map(Number);
+
+
+      if (
+        digits.length < 300
+      ) {
+
+        backtestResultsEl.textContent =
+          "Not enough saved history. Load more history or keep live running to collect more digits.";
+
+        return;
+
+      }
+
+
+      const trainInput =
+        Math.max(
+          100,
+          Number(
+            trainSizeEl.value
+          ) || 2000
+        );
+
+
+      const testInput =
+        Math.max(
+          100,
+          Number(
+            testLimitEl.value
+          ) || 5000
+        );
+
+
+      const trainSize =
+        Math.min(
+          trainInput,
+          digits.length - 100
+        );
+
+
+      const end =
+        Math.min(
+          digits.length - 1,
+          trainSize + testInput
+        );
+
+
+      const local1 =
+        createCounts1();
+
+
+      const local2 =
+        createCounts2();
+
+
+      for (
+        let i = 1;
+        i < trainSize;
+        i++
+      ) {
+
+        local1[
+          digits[i - 1]
+        ][
+          digits[i]
+        ]++;
+
+      }
+
+
+      for (
+        let i = 2;
+        i < trainSize;
+        i++
+      ) {
+
+        local2[
+          digits[i - 2] * 10 +
+          digits[i - 1]
+        ][
+          digits[i]
+        ]++;
+
+      }
+
+
+      const matches = {
+        signals: 0,
+        wins: 0,
+        profit: 0,
+        equity: 0,
+        peak: 0,
+        maxDD: 0
       };
 
-      backtestResultsEl.textContent =
-        `Backtest completed.\nSaved digits used: ${savedDigits.length}\nTested ticks: ${testedTicks}\nEdge threshold: ${(settings.edgeThreshold * 100).toFixed(2)}%\n\n` +
-        formatStats("Matches", matches, (100 / settings.matchesPayout).toFixed(2) + "%") + `\n` +
-        formatStats("Differs", differs, (100 / settings.differsPayout).toFixed(2) + "%") +
-        `\nNote: This is a next-tick approximation, not necessarily the exact Deriv contract tick used for entry/exit.`;
+
+      const differs = {
+        signals: 0,
+        wins: 0,
+        profit: 0,
+        equity: 0,
+        peak: 0,
+        maxDD: 0
+      };
+
+
+      for (
+        let i = trainSize;
+        i < end;
+        i++
+      ) {
+
+        const prev1 =
+          digits[i];
+
+
+        const prev2 =
+          i > 0
+            ? digits[i - 1]
+            : null;
+
+
+        const actual =
+          digits[i + 1];
+
+
+        const probs =
+          predictModel(
+            prev2,
+            prev1,
+            local1,
+            local2,
+            s
+          ).blended;
+
+
+        const bestDigit =
+          argmax(probs);
+
+
+        if (
+          probs[bestDigit] >
+          (1 / s.matchesPayout) +
+          s.edgeThreshold
+        ) {
+
+          updateTradeStats(
+            matches,
+            actual === bestDigit,
+            s.matchesPayout
+          );
+
+        }
+
+
+        const avoidDigit =
+          argmin(probs);
+
+
+        if (
+          (1 - probs[avoidDigit]) >
+          (1 / s.differsPayout) +
+          s.edgeThreshold
+        ) {
+
+          updateTradeStats(
+            differs,
+            actual !== avoidDigit,
+            s.differsPayout
+          );
+
+        }
+
+
+        local1[
+          prev1
+        ][
+          actual
+        ]++;
+
+
+        if (
+          prev2 !== null
+        ) {
+
+          local2[
+            prev2 * 10 +
+            prev1
+          ][
+            actual
+          ]++;
+
+        }
+
+      }
+
+
+      renderBacktestResults(
+        end - trainSize,
+        matches,
+        differs,
+        s
+      );
+
     }
+
+
+    function updateTradeStats(
+      stats,
+      win,
+      payout
+    ) {
+
+      stats.signals++;
+
+
+      if (win) {
+
+        stats.wins++;
+
+        stats.profit +=
+          payout - 1;
+
+        stats.equity +=
+          payout - 1;
+
+      } else {
+
+        stats.profit -=
+          1;
+
+        stats.equity -=
+          1;
+
+      }
+
+
+      if (
+        stats.equity >
+        stats.peak
+      ) {
+
+        stats.peak =
+          stats.equity;
+
+      }
+
+
+      const drawdown =
+        stats.peak -
+        stats.equity;
+
+
+      if (
+        drawdown >
+        stats.maxDD
+      ) {
+
+        stats.maxDD =
+          drawdown;
+
+      }
+
+    }
+
+
+    function renderBacktestResults(
+      testedTicks,
+      matches,
+      differs,
+      settings
+    ) {
+
+      const formatStats =
+        (
+          label,
+          stats,
+          breakEven
+        ) => {
+
+          const winRate =
+            stats.signals
+              ? (
+                  (
+                    stats.wins /
+                    stats.signals
+                  ) * 100
+                ).toFixed(2) +
+                "%"
+              : "-";
+
+
+          return (
+            `${label}\n` +
+            `Signals: ${stats.signals}\n` +
+            `Wins: ${stats.wins}\n` +
+            `Win rate: ${winRate}\n` +
+            `Break-even required: ${breakEven}\n` +
+            `Profit units: ${stats.profit.toFixed(2)}\n` +
+            `Max drawdown units: ${stats.maxDD.toFixed(2)}\n`
+          );
+
+        };
+
+
+      backtestResultsEl.textContent =
+
+        `Backtest completed.\n` +
+
+        `Saved digits used: ${savedDigits.length}\n` +
+
+        `Tested ticks: ${testedTicks}\n` +
+
+        `Edge threshold: ${(settings.edgeThreshold * 100).toFixed(2)}%\n\n` +
+
+        formatStats(
+          "Matches",
+          matches,
+          (
+            100 /
+            settings.matchesPayout
+          ).toFixed(2) +
+          "%"
+        ) +
+
+        `\n` +
+
+        formatStats(
+          "Differs",
+          differs,
+          (
+            100 /
+            settings.differsPayout
+          ).toFixed(2) +
+          "%"
+        ) +
+
+        `\nNote: This is a next-tick approximation, not necessarily the exact Deriv contract tick used for entry/exit.`;
+
+    }
+
 
     function updateCountdown() {
-      const serverMs = Date.now() + timeOffset;
-      const nextBoundary = (Math.floor(serverMs / 10000) + 1) * 10000;
-      const remainingSeconds = Math.max(0, nextBoundary - serverMs) / 1000;
 
-      countdownEl.textContent = remainingSeconds.toFixed(2) + "s";
-      if (remainingSeconds <= 3) {
-        countdownEl.classList.remove("greenText");
-        countdownEl.classList.add("redText");
+      const serverMs =
+        Date.now() +
+        timeOffset;
+
+
+      const nextBoundary =
+        (
+          Math.floor(
+            serverMs / 10000
+          ) + 1
+        ) * 10000;
+
+
+      const remainingSeconds =
+        Math.max(
+          0,
+          nextBoundary -
+          serverMs
+        ) / 1000;
+
+
+      countdownEl.textContent =
+        remainingSeconds.toFixed(2) +
+        "s";
+
+
+      if (
+        remainingSeconds <= 3
+      ) {
+
+        countdownEl.classList.remove(
+          "greenText"
+        );
+
+        countdownEl.classList.add(
+          "redText"
+        );
+
       } else {
-        countdownEl.classList.remove("redText");
-        countdownEl.classList.add("greenText");
+
+        countdownEl.classList.remove(
+          "redText"
+        );
+
+        countdownEl.classList.add(
+          "greenText"
+        );
+
       }
-      requestAnimationFrame(updateCountdown);
+
+
+      requestAnimationFrame(
+        updateCountdown
+      );
+
     }
 
+
+    // ==========================================================
+    // INITIALIZE
+    // ==========================================================
+
     (function init() {
-      const s = readSettings();
-      loadSavedHistory(s.symbol);
-      rebuildModel(savedDigits, s.modelWindow);
+
+      const s =
+        readSettings();
+
+
+      loadSavedHistory(
+        s.symbol
+      );
+
+
+      rebuildModel(
+        savedDigits,
+        s.modelWindow
+      );
+
+
       initPrevFromSaved();
+
+
       renderModelInfo();
-      renderPrediction(currentPrediction());
+
+
+      renderPrediction(
+        currentPrediction()
+      );
+
+
       updateCountdown();
-      renderSelfImproveStats(0, 0, 0, adaptiveWeights);
+
+
+      renderSelfImproveStats(
+        0,
+        0,
+        0,
+        adaptiveWeights
+      );
+
+
       renderTickLog();
+
     })();
+
   </script>
+
 </body>
-  </html>
+</html>
+```
+
